@@ -473,13 +473,43 @@ const DeleteMessagePage = () => {
       {/* 使用说明 */}
       <Card title="使用说明" style={{ marginTop: 16 }} size="small">
         <ul style={{ margin: 0, paddingLeft: 20 }}>
+          <li>
+            <strong>功能：</strong>批量删除指定的消息
+          </li>
+          <li>
+            <strong>参数：</strong>messages (消息对象数组), serverExtension (服务端扩展字段)
+          </li>
+          <li>
+            <strong>返回值：</strong>无返回值，删除成功后触发相关事件
+          </li>
+          <li>
+            <strong>用途：</strong>删除会话中的消息，支持多端同步
+          </li>
+        </ul>
+      </Card>
+
+      {/* 重要提醒 */}
+      <Card
+        title="⚠️ 重要提醒"
+        style={{
+          marginTop: 16,
+          border: '2px solid #ff9c6e',
+          backgroundColor: '#fff7e6',
+        }}
+        size="small"
+        styles={{
+          header: {
+            backgroundColor: '#ffe7ba',
+            color: '#d46b08',
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
           <li>一次最多可以删除50条消息</li>
           <li>所删除的消息必须是同一会话的消息</li>
           <li>删除消息会多端同步，其他端也会收到删除通知</li>
-          <li>删除成功会触发 V2NIMMessageListener.onMessageDeletedNotifications 事件</li>
-          <li>选择会话后会自动加载该会话中的所有消息</li>
-          <li>可以通过多选框选择多条消息进行批量删除</li>
-          <li>服务端扩展字段用于传递额外的删除参数</li>
+          <li>删除成功会触发 onMessageDeletedNotifications 事件</li>
         </ul>
       </Card>
     </div>

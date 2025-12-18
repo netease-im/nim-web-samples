@@ -227,6 +227,24 @@ const GetFriendListPage = () => {
         </Card>
       )}
 
+      {/* 使用说明 */}
+      <Card title="使用说明" style={{ marginTop: 16 }} size="small">
+        <ul style={{ margin: 0, paddingLeft: 20 }}>
+          <li>
+            <strong>功能：</strong>获取当前用户的好友列表
+          </li>
+          <li>
+            <strong>参数：</strong>无参数
+          </li>
+          <li>
+            <strong>返回值：</strong>V2NIMFriend[] (好友信息列表)
+          </li>
+          <li>
+            <strong>用途：</strong>获取完整的好友列表，包含好友基本信息和用户资料
+          </li>
+        </ul>
+      </Card>
+
       {/* 重要提醒 */}
       <Card
         title="⚠️ 重要提醒"
@@ -245,69 +263,10 @@ const GetFriendListPage = () => {
         }}
       >
         <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
-          <li>
-            <strong>此接口的数据来源是数据同步时下发的好友信息</strong>
-          </li>
-          <li>因此调用时机需要等待 V2NIMLoginService 的 onDataSync 事件，数据同步完毕后才能调用</li>
-          <li>好友列表包含好友的基本信息和关联的用户资料信息</li>
-        </ul>
-      </Card>
-
-      {/* 数据结构说明 */}
-      <Card title="V2NIMFriend 数据结构说明" style={{ marginTop: 16 }} size="small">
-        <div style={{ marginBottom: 16 }}>
-          <h4>基础字段：</h4>
-          <ul style={{ margin: '8px 0', paddingLeft: 20 }}>
-            <li>
-              <strong>accountId:</strong> 好友账号ID
-            </li>
-            <li>
-              <strong>alias:</strong> 好友备注名（可选）
-            </li>
-            <li>
-              <strong>source:</strong> 好友来源，目前默认都是0
-            </li>
-            <li>
-              <strong>createTime:</strong> 好友关系创建时间
-            </li>
-            <li>
-              <strong>updateTime:</strong> 好友信息更新时间
-            </li>
-          </ul>
-        </div>
-
-        <div style={{ marginBottom: 16 }}>
-          <h4>扩展字段：</h4>
-          <ul style={{ margin: '8px 0', paddingLeft: 20 }}>
-            <li>
-              <strong>serverExtension:</strong> 服务器扩展字段
-            </li>
-            <li>
-              <strong>customerExtension:</strong> 用户扩展字段
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h4>关联数据：</h4>
-          <ul style={{ margin: '8px 0', paddingLeft: 20 }}>
-            <li>
-              <strong>userProfile:</strong> 关联的用户资料信息（V2NIMUser对象）
-            </li>
-            <li>包含用户的昵称、头像、签名等详细信息</li>
-          </ul>
-        </div>
-      </Card>
-
-      {/* 使用说明 */}
-      <Card title="使用说明" style={{ marginTop: 16 }} size="small">
-        <ul style={{ margin: 0, paddingLeft: 20 }}>
-          <li>此接口用于获取当前用户的好友列表</li>
-          <li>返回的数据是数组形式的 V2NIMFriend 对象列表</li>
-          <li>每个好友对象包含好友基本信息和关联的用户资料</li>
-          <li>表格支持分页和排序，方便查看大量好友数据</li>
-          <li>可以通过备注名、用户昵称等信息快速识别好友</li>
-          <li>扩展字段可用于存储自定义的好友相关信息</li>
+          <li>数据来源于登录时的数据同步</li>
+          <li>需要等待 onDataSync 数据同步完成后才能调用</li>
+          <li>返回的好友列表包含基本信息和关联的用户资料</li>
+          <li>支持好友备注、扩展字段等自定义信息</li>
         </ul>
       </Card>
     </div>

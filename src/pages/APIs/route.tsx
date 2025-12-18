@@ -3,6 +3,19 @@ import { Navigate, Outlet, Route } from 'react-router-dom';
 import APILayout from '@/components/APILayout';
 import NIMInitForm from '@/components/NIMInitForm';
 
+import V2NIMConversationGroupServiceAddConversationsToGroup from './V2NIMConversationGroupService/AddConversationsToGroup';
+import V2NIMConversationGroupServiceCreateConversationGroup from './V2NIMConversationGroupService/CreateConversationGroup';
+import V2NIMConversationGroupServiceDeleteConversationGroup from './V2NIMConversationGroupService/DeleteConversationGroup';
+import V2NIMConversationGroupServiceGetConversationGroupList from './V2NIMConversationGroupService/GetConversationGroupList';
+import V2NIMConversationGroupServiceOn from './V2NIMConversationGroupService/On';
+import V2NIMConversationGroupServiceRemoveConversationsFromGroup from './V2NIMConversationGroupService/RemoveConversationsFromGroup';
+import V2NIMConversationGroupServiceUpdateConversationGroup from './V2NIMConversationGroupService/UpdateConversationGroup';
+import V2NIMConversationServiceCreateConversation from './V2NIMConversationService/CreateConversation';
+import V2NIMConversationServiceDeleteConversation from './V2NIMConversationService/DeleteConversation';
+import V2NIMConversationServiceGetConversationList from './V2NIMConversationService/GetConversationList';
+import V2NIMConversationServiceMarkConversationRead from './V2NIMConversationService/MarkConversationRead';
+import V2NIMConversationServiceOn from './V2NIMConversationService/On';
+import V2NIMConversationServiceStickTopConversation from './V2NIMConversationService/StickTopConversation';
 import V2NIMFriendServiceAcceptAddApplication from './V2NIMFriendService/AcceptAddApplication';
 import V2NIMFriendServiceAddFriend from './V2NIMFriendService/AddFriend';
 import V2NIMFriendServiceDeleteFriend from './V2NIMFriendService/DeleteFriend';
@@ -26,6 +39,23 @@ import V2NIMMessageServiceRevokeMessage from './V2NIMMessageService/RevokeMessag
 import V2NIMMessageServiceSendMessage from './V2NIMMessageService/SendMessage';
 import V2NIMNotificationServiceOn from './V2NIMNotificationService/On';
 import V2NIMNotificationServiceSendCustomNotification from './V2NIMNotificationService/SendCustomNotification';
+import V2NIMSettingServiceGetConversationMuteStatus from './V2NIMSettingService/GetConversationMuteStatus';
+import V2NIMSettingServiceGetPushMobileOnDesktopOnline from './V2NIMSettingService/GetPushMobileOnDesktopOnline';
+import V2NIMSettingServiceOn from './V2NIMSettingService/On';
+import V2NIMSettingServiceSetP2PMessageMuteMode from './V2NIMSettingService/SetP2PMessageMuteMode';
+import V2NIMSettingServiceSetPushMobileOnDesktopOnline from './V2NIMSettingService/SetPushMobileOnDesktopOnline';
+import V2NIMSettingServiceSetTeamMessageMuteMode from './V2NIMSettingService/SetTeamMessageMuteMode';
+import V2NIMStorageServiceAddCustomStorageScene from './V2NIMStorageService/AddCustomStorageScene';
+import V2NIMStorageServiceGetImageThumbUrl from './V2NIMStorageService/GetImageThumbUrl';
+import V2NIMStorageServiceGetVideoCoverUrl from './V2NIMStorageService/GetVideoCoverUrl';
+import V2NIMStorageServiceShortUrlToLong from './V2NIMStorageService/ShortUrlToLong';
+import V2NIMStorageServiceUploadFile from './V2NIMStorageService/UploadFile';
+import V2NIMStorageServiceUploadFileWithMetaInfo from './V2NIMStorageService/UploadFileWithMetaInfo';
+import V2NIMSubscriptionServiceOn from './V2NIMSubscriptionService/On';
+import V2NIMSubscriptionServicePublishCustomUserStatus from './V2NIMSubscriptionService/PublishCustomUserStatus';
+import V2NIMSubscriptionServiceQueryUserStatusSubscriptions from './V2NIMSubscriptionService/QueryUserStatusSubscriptions';
+import V2NIMSubscriptionServiceSubscribeUserStatus from './V2NIMSubscriptionService/SubscribeUserStatus';
+import V2NIMSubscriptionServiceUnsubscribeUserStatus from './V2NIMSubscriptionService/UnsubscribeUserStatus';
 import V2NIMTeamServiceAcceptInvitation from './V2NIMTeamService/AcceptInvitation';
 import V2NIMTeamServiceAcceptJoinApplication from './V2NIMTeamService/AcceptJoinApplication';
 import V2NIMTeamServiceApplyJoinTeam from './V2NIMTeamService/ApplyJoinTeam';
@@ -72,6 +102,52 @@ export const apiRoutes = [
     <Route path="V2NIMLoginService/login" element={<V2NIMLoginServiceLogin />} />,
     <Route path="V2NIMLoginService/kickOffline" element={<V2NIMLoginServiceKickOffline />} />,
     <Route path="V2NIMLoginService/on" element={<V2NIMLoginServiceOn />} />,
+    <Route
+      path="V2NIMConversationService/createConversation"
+      element={<V2NIMConversationServiceCreateConversation />}
+    />
+    <Route
+      path="V2NIMConversationService/deleteConversation"
+      element={<V2NIMConversationServiceDeleteConversation />}
+    />
+    <Route
+      path="V2NIMConversationService/markConversationRead"
+      element={<V2NIMConversationServiceMarkConversationRead />}
+    />
+    <Route path="V2NIMConversationService/on" element={<V2NIMConversationServiceOn />} />
+    <Route
+      path="V2NIMConversationService/stickTopConversation"
+      element={<V2NIMConversationServiceStickTopConversation />}
+    />
+    <Route
+      path="V2NIMConversationService/getConversationList"
+      element={<V2NIMConversationServiceGetConversationList />}
+    />
+    <Route
+      path="V2NIMConversationGroupService/createConversationGroup"
+      element={<V2NIMConversationGroupServiceCreateConversationGroup />}
+    />
+    <Route
+      path="V2NIMConversationGroupService/deleteConversationGroup"
+      element={<V2NIMConversationGroupServiceDeleteConversationGroup />}
+    />
+    <Route
+      path="V2NIMConversationGroupService/updateConversationGroup"
+      element={<V2NIMConversationGroupServiceUpdateConversationGroup />}
+    />
+    <Route
+      path="V2NIMConversationGroupService/addConversationsToGroup"
+      element={<V2NIMConversationGroupServiceAddConversationsToGroup />}
+    />
+    <Route
+      path="V2NIMConversationGroupService/removeConversationsFromGroup"
+      element={<V2NIMConversationGroupServiceRemoveConversationsFromGroup />}
+    />
+    <Route
+      path="V2NIMConversationGroupService/getConversationGroupList"
+      element={<V2NIMConversationGroupServiceGetConversationGroupList />}
+    />
+    <Route path="V2NIMConversationGroupService/on" element={<V2NIMConversationGroupServiceOn />} />
     <Route
       path="V2NIMLocalConversationService/createConversation"
       element={<V2NIMLocalConversationServiceCreateConversation />}
@@ -217,6 +293,65 @@ export const apiRoutes = [
     <Route
       path="V2NIMNotificationService/sendCustomNotification"
       element={<V2NIMNotificationServiceSendCustomNotification />}
+    />
+    <Route
+      path="V2NIMSettingService/getConversationMuteStatus"
+      element={<V2NIMSettingServiceGetConversationMuteStatus />}
+    />
+    <Route
+      path="V2NIMSettingService/getPushMobileOnDesktopOnline"
+      element={<V2NIMSettingServiceGetPushMobileOnDesktopOnline />}
+    />
+    <Route
+      path="V2NIMSettingService/setTeamMessageMuteMode"
+      element={<V2NIMSettingServiceSetTeamMessageMuteMode />}
+    />
+    <Route
+      path="V2NIMSettingService/setP2PMessageMuteMode"
+      element={<V2NIMSettingServiceSetP2PMessageMuteMode />}
+    />
+    <Route
+      path="V2NIMSettingService/setPushMobileOnDesktopOnline"
+      element={<V2NIMSettingServiceSetPushMobileOnDesktopOnline />}
+    />
+    <Route path="V2NIMSettingService/on" element={<V2NIMSettingServiceOn />} />
+    <Route
+      path="V2NIMStorageService/addCustomStorageScene"
+      element={<V2NIMStorageServiceAddCustomStorageScene />}
+    />
+    <Route
+      path="V2NIMStorageService/getImageThumbUrl"
+      element={<V2NIMStorageServiceGetImageThumbUrl />}
+    />
+    <Route
+      path="V2NIMStorageService/getVideoCoverUrl"
+      element={<V2NIMStorageServiceGetVideoCoverUrl />}
+    />
+    <Route
+      path="V2NIMStorageService/shortUrlToLong"
+      element={<V2NIMStorageServiceShortUrlToLong />}
+    />
+    <Route path="V2NIMStorageService/uploadFile" element={<V2NIMStorageServiceUploadFile />} />
+    <Route
+      path="V2NIMStorageService/uploadFileWithMetaInfo"
+      element={<V2NIMStorageServiceUploadFileWithMetaInfo />}
+    />
+    <Route path="V2NIMSubscriptionService/on" element={<V2NIMSubscriptionServiceOn />} />
+    <Route
+      path="V2NIMSubscriptionService/subscribeUserStatus"
+      element={<V2NIMSubscriptionServiceSubscribeUserStatus />}
+    />
+    <Route
+      path="V2NIMSubscriptionService/unsubscribeUserStatus"
+      element={<V2NIMSubscriptionServiceUnsubscribeUserStatus />}
+    />
+    <Route
+      path="V2NIMSubscriptionService/publishCustomUserStatus"
+      element={<V2NIMSubscriptionServicePublishCustomUserStatus />}
+    />
+    <Route
+      path="V2NIMSubscriptionService/queryUserStatusSubscriptions"
+      element={<V2NIMSubscriptionServiceQueryUserStatusSubscriptions />}
     />
     {/* 通用表单路由 */}
     <Route path=":service/:method" element={<APIs />} />,

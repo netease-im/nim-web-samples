@@ -76,6 +76,33 @@ const OnPage = () => {
     message.success('已取消监听');
   };
 
+  // 输出监听设置代码到控制台
+  const handleOutputCode = () => {
+    const code = `
+// 登录服务监听
+const setupLoginListeners = () => {
+  // 登录状态变化监听
+  window.nim.V2NIMLoginService.on('onLoginStatus', (loginStatus) => {
+    console.log('登录状态变化:', loginStatus);
+    // 1-已登录, 2-登录中, 3-未登录, 4-重连退避中
+  });
+
+  // 数据同步进展监听
+  window.nim.V2NIMLoginService.on('onDataSync', (type, state, error) => {
+    console.log('数据同步进展:', { type, state, error });
+    // 主数据同步完成后可调用依赖同步数据的接口
+  });
+};
+
+// 调用设置函数
+setupLoginListeners();
+`;
+
+    console.log('V2NIMLoginService 监听设置代码:');
+    console.log(code);
+    message.success('监听设置代码已输出到控制台');
+  };
+
   return (
     <div className={styles.formContainer}>
       <Form form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 20 }} style={{ marginTop: 24 }}>
@@ -97,20 +124,71 @@ const OnPage = () => {
             <Button type="default" danger onClick={handleRemoveAllListeners}>
               取消所有监听
             </Button>
+            <Button type="default" onClick={handleOutputCode}>
+              输出监听代码
+            </Button>
           </Space>
         </Form.Item>
       </Form>
 
+      {/* 监听事件说明 */}
+      <Card title="监听事件说明" style={{ marginTop: 16 }} size="small">
+        <div style={{ marginBottom: 12 }}>
+          <Text strong>onLoginStatus</Text>
+          <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
+            <li>登录状态变化时触发</li>
+            <li>参数：loginStatus (登录状态码)</li>
+            <li>状态值：1-已登录, 2-登录中, 3-未登录, 4-重连退避中</li>
+          </ul>
+        </div>
+
+        <div>
+          <Text strong>onDataSync</Text>
+          <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
+            <li>数据同步进展时触发</li>
+            <li>参数：type (同步类型), state (同步状态), error (错误信息)</li>
+            <li>关键状态：主数据同步完成后可调用依赖同步数据的接口</li>
+          </ul>
+        </div>
+      </Card>
+
       {/* 使用说明 */}
       <Card title="使用说明" style={{ marginTop: 16 }} size="small">
         <ul style={{ margin: 0, paddingLeft: 20 }}>
-          <li>本模块只演示 onLoginStatus 登录状态变化, onDataSync 数据同步进展</li>
-          <li>其他细节事件已经在初始化表单时设置, 请翻阅 NIMInitForm 代码查看</li>
-          <li>对同一个事件 on 监听多次, 是都会生效的, 会触发多次. 使用时注意防止重复监听</li>
-          <li>使用"取消所有监听"可以一次性移除所有已设置的监听器</li>
           <li>
-            <Text type="warning">注意：跳转去“登录与登出”页执行登录动作查看.</Text>
+            <strong>功能：</strong>演示 V2NIMLoginService 的核心事件监听
           </li>
+          <li>
+            <strong>触发方式：</strong>去"登录与登出"页执行登录动作查看事件触发
+          </li>
+          <li>
+            <strong>用途：</strong>监听登录状态和数据同步，确保应用状态正确
+          </li>
+        </ul>
+      </Card>
+
+      {/* 重要提醒 */}
+      <Card
+        title="⚠️ 重要提醒"
+        style={{
+          marginTop: 16,
+          border: '2px solid #ff9c6e',
+          backgroundColor: '#fff7e6',
+        }}
+        size="small"
+        styles={{
+          header: {
+            backgroundColor: '#ffe7ba',
+            color: '#d46b08',
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
+          <li>onDataSync 完成后才能调用依赖同步数据的接口, 如获取本地会话</li>
+          <li>重复监听同一事件会导致多次触发，建议先取消监听再设置</li>
+          <li>其他细节事件已在初始化表单中设置，可查看 NIMInitForm 代码</li>
+          <li>建议在应用初始化时设置监听，在应用销毁时取消监听</li>
         </ul>
       </Card>
     </div>

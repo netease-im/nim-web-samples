@@ -526,13 +526,43 @@ const GetMessageListExPage = () => {
       {/* 使用说明 */}
       <Card title="使用说明" style={{ marginTop: 16 }} size="small">
         <ul style={{ margin: 0, paddingLeft: 20 }}>
-          <li>getMessageListEx 是增强版的消息查询接口，支持更多查询条件</li>
+          <li>
+            <strong>功能：</strong>增强版消息查询接口，支持多种查询条件
+          </li>
+          <li>
+            <strong>参数：</strong>查询选项对象 (会话ID、时间范围、数量限制、消息类型等)
+          </li>
+          <li>
+            <strong>返回值：</strong>V2NIMMessageListResult (消息列表和分页信息)
+          </li>
+          <li>
+            <strong>用途：</strong>按条件查询历史消息，支持分页和类型筛选
+          </li>
+        </ul>
+      </Card>
+
+      {/* 重要提醒 */}
+      <Card
+        title="⚠️ 重要提醒"
+        style={{
+          marginTop: 16,
+          border: '2px solid #ff9c6e',
+          backgroundColor: '#fff7e6',
+        }}
+        size="small"
+        styles={{
+          header: {
+            backgroundColor: '#ffe7ba',
+            color: '#d46b08',
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
           <li>开始时间和结束时间都为0时，表示不限制时间范围</li>
+          <li>锚点消息用于分页查询，选择后会自动设置结束时间</li>
+          <li>查询方向决定相对于锚点消息是查询更早还是更新的消息</li>
           <li>可以通过消息类型筛选特定类型的消息</li>
-          <li>锚点消息用于分页查询，可以从查询结果中选择任意一条消息作为锚点</li>
-          <li>选择锚点消息后会自动设置结束时间为该消息的创建时间</li>
-          <li>严格模式会进行更严格的参数校验和查询</li>
-          <li>查询方向决定了相对于锚点消息是查询更早还是更新的消息</li>
         </ul>
       </Card>
     </div>

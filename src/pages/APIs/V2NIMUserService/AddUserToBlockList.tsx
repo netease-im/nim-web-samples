@@ -375,10 +375,42 @@ const AddUserToBlockListPage = () => {
       {/* 使用说明 */}
       <Card title="使用说明" size="small">
         <ul style={{ margin: 0, paddingLeft: 20 }}>
-          <li>获取黑名单列表参见 API-getBlockList</li>
+          <li>
+            <strong>功能：</strong>管理用户黑名单，支持添加和移除黑名单用户
+          </li>
+          <li>
+            <strong>参数：</strong>accountId (用户账号ID)
+          </li>
+          <li>
+            <strong>返回值：</strong>无返回值，成功时触发相关事件回调
+          </li>
+          <li>
+            <strong>用途：</strong>屏蔽指定用户，不接收其发送的消息
+          </li>
+        </ul>
+      </Card>
+
+      {/* 重要提醒 */}
+      <Card
+        title="⚠️ 重要提醒"
+        style={{
+          marginTop: 16,
+          border: '2px solid #ff9c6e',
+          backgroundColor: '#fff7e6',
+        }}
+        size="small"
+        styles={{
+          header: {
+            backgroundColor: '#ffe7ba',
+            color: '#d46b08',
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
           <li>添加到黑名单后，将不会收到该用户发送的消息</li>
+          <li>黑名单操作会触发相关事件，可通过监听器接收通知</li>
           <li>可以通过表格中的"移除"按钮快速移除黑名单用户</li>
-          <li>也可以通过下方表单选择用户进行移除操作</li>
           <li>所有操作完成后会自动刷新黑名单列表</li>
         </ul>
       </Card>

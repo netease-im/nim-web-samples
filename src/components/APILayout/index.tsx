@@ -1,6 +1,6 @@
 import { Layout, Menu, Typography } from 'antd';
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { apiMenuItems } from '../../configs/apiMenu';
 
@@ -69,7 +69,6 @@ const APILayout = ({ children }: APILayoutProps) => {
           parentKeys.push(...deeperParents);
         }
       }
-
       return parentKeys;
     };
 
@@ -149,14 +148,10 @@ const APILayout = ({ children }: APILayoutProps) => {
   const selectedLabel = useMemo(() => {
     const findLabel = (items: MenuItem[], targetKey: string): string => {
       for (const item of items) {
-        if (item.key === targetKey) {
-          return item.label;
-        }
-        if (item.children) {
-          const childLabel = findLabel(item.children, targetKey);
-          if (childLabel) {
-            return `${item.label} - ${childLabel}`;
-          }
+        if (item.key === targetKey) return item.label;
+        if (!item.children) continue;
+        for (const child of item.children) {
+          if (child.key === targetKey) return `${item.label} - ${child.label}`;
         }
       }
       return targetKey;
@@ -164,6 +159,7 @@ const APILayout = ({ children }: APILayoutProps) => {
 
     return findLabel(menuItems, selectedKey);
   }, [selectedKey]);
+
   return (
     <Layout>
       <Layout

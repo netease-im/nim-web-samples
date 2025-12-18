@@ -218,13 +218,43 @@ const GetUserListFromCloudPage = () => {
       {/* 使用说明 */}
       <Card title="使用说明" style={{ marginTop: 16 }} size="small">
         <ul style={{ margin: 0, paddingLeft: 20 }}>
-          <li>此接口用于从云端批量获取用户资料信息</li>
-          <li>支持添加多个账号ID，最多支持150个账号</li>
-          <li>账号ID不能为空且不能重复</li>
-          <li>返回结果包含用户的基本信息如昵称、头像等</li>
-          <li>可以点击"添加示例账号"快速添加测试用的账号ID</li>
-          <li>相比 getUserList，此接口保证获取到的是服务器最新数据.</li>
-          <li>建议在需要实时感知用户最新的信息的场景下使用</li>
+          <li>
+            <strong>功能：</strong>从云端获取指定账号的最新用户信息列表
+          </li>
+          <li>
+            <strong>参数：</strong>accountIds (账号ID数组，最多150个)
+          </li>
+          <li>
+            <strong>返回值：</strong>V2NIMUser[] (用户信息列表)
+          </li>
+          <li>
+            <strong>用途：</strong>获取服务器上最新的用户信息，确保实时性
+          </li>
+        </ul>
+      </Card>
+
+      {/* 重要提醒 */}
+      <Card
+        title="⚠️ 重要提醒"
+        style={{
+          marginTop: 16,
+          border: '2px solid #ff9c6e',
+          backgroundColor: '#fff7e6',
+        }}
+        size="small"
+        styles={{
+          header: {
+            backgroundColor: '#ffe7ba',
+            color: '#d46b08',
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
+          <li>直接从服务器获取最新数据，保证信息的实时性</li>
+          <li>相比 getUserList，此接口不依赖本地缓存</li>
+          <li>建议在需要实时感知用户最新信息的场景下使用</li>
+          <li>频繁调用会增加网络请求，建议合理使用</li>
         </ul>
       </Card>
     </div>

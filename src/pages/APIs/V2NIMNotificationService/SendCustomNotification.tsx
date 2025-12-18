@@ -620,112 +620,16 @@ const SendCustomNotificationPage = () => {
       <Card title="使用说明" style={{ marginTop: 16 }} size="small">
         <ul style={{ margin: 0, paddingLeft: 20 }}>
           <li>
-            <strong>自定义通知：</strong>用于发送自定义的透传通知，接收方会通过
-            onReceiveCustomNotification 回调收到
+            <strong>功能：</strong>发送自定义透传通知，用于实时业务通知
           </li>
           <li>
-            <strong>会话类型：</strong>
-            <ul style={{ marginTop: 4 }}>
-              <li>点对点 (P2P)：发送给指定用户的私聊通知</li>
-              <li>群组 (Team)：发送给高级群的群组通知</li>
-              <li>超大群 (SuperTeam)：发送给超大群的群组通知</li>
-            </ul>
+            <strong>参数：</strong>conversationId (会话ID), content (通知内容), params (可选配置)
           </li>
           <li>
-            <strong>通知内容：</strong>最大支持4096个字符，会作为 SystemMsgTag.Attach 字段传递
+            <strong>返回值：</strong>无返回值，成功时触发接收方的通知回调
           </li>
           <li>
-            <strong>配置参数：</strong>所有配置参数都是可选的，可以根据实际需求选择性配置
-            <ul style={{ marginTop: 4 }}>
-              <li>通知相关配置：控制角标、昵称、APNS等基础通知属性</li>
-              <li>推送配置：控制离线推送的标题、内容、载荷等</li>
-              <li>反垃圾配置：控制是否启用反垃圾检测</li>
-              <li>路由配置：控制消息路由相关设置</li>
-            </ul>
-          </li>
-          <li>
-            <strong>会话ID构建：</strong>系统会根据会话类型和目标账号自动构建正确的会话ID
-          </li>
-        </ul>
-      </Card>
-
-      {/* API 参数说明 */}
-      <Card title="API 参数说明" style={{ marginTop: 16 }} size="small">
-        <div style={{ marginBottom: 16 }}>
-          <h4>基础参数：</h4>
-          <ul style={{ margin: '8px 0', paddingLeft: 20 }}>
-            <li>
-              <strong>conversationId (string):</strong> 会话ID，必填
-              <ul style={{ marginTop: 4 }}>
-                <li>点对点会话：通过 V2NIMConversationIdUtil.p2pConversationId(accountId) 构建</li>
-                <li>群组会话：通过 V2NIMConversationIdUtil.teamConversationId(teamId) 构建</li>
-                <li>
-                  超大群会话：通过 V2NIMConversationIdUtil.superTeamConversationId(superTeamId) 构建
-                </li>
-              </ul>
-            </li>
-            <li>
-              <strong>content (string):</strong> 通知内容，必填，最大4096个字符
-            </li>
-            <li>
-              <strong>params (V2NIMSendCustomNotificationParams):</strong> 发送配置参数，可选
-            </li>
-          </ul>
-        </div>
-
-        <div style={{ marginBottom: 16 }}>
-          <h4>V2NIMSendCustomNotificationParams 配置：</h4>
-          <ul style={{ margin: '8px 0', paddingLeft: 20 }}>
-            <li>
-              <strong>notificationConfig (V2NIMNotificationConfig):</strong> 通知相关配置
-              <ul style={{ marginTop: 4 }}>
-                <li>badgeEnabled: 是否显示角标</li>
-                <li>needPushNick: 是否需要推送昵称</li>
-                <li>apnsText: APNS推送显示文本</li>
-                <li>pushPayload: 推送载荷数据</li>
-              </ul>
-            </li>
-            <li>
-              <strong>pushConfig (V2NIMNotificationPushConfig):</strong> 推送配置
-              <ul style={{ marginTop: 4 }}>
-                <li>pushTitle: 推送标题</li>
-                <li>pushContent: 推送内容</li>
-                <li>pushPayload: 推送载荷</li>
-                <li>forcePush: 是否强制推送</li>
-                <li>forcePushList: 强制推送用户列表</li>
-                <li>forcePushContent: 强制推送内容</li>
-              </ul>
-            </li>
-            <li>
-              <strong>antispamConfig (V2NIMNotificationAntispamConfig):</strong> 反垃圾配置
-              <ul style={{ marginTop: 4 }}>
-                <li>antispamEnabled: 是否启用反垃圾</li>
-                <li>antispamBusinessId: 反垃圾业务ID</li>
-              </ul>
-            </li>
-            <li>
-              <strong>routeConfig (V2NIMNotificationRouteConfig):</strong> 路由配置
-              <ul style={{ marginTop: 4 }}>
-                <li>routeEnabled: 是否启用路由</li>
-                <li>routeEnvironment: 路由环境</li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </Card>
-
-      {/* 返回结果说明 */}
-      <Card title="返回结果说明" style={{ marginTop: 16 }} size="small">
-        <ul style={{ margin: 0, paddingLeft: 20 }}>
-          <li>
-            <strong>成功：</strong>Promise&lt;void&gt;，无返回值表示发送成功
-          </li>
-          <li>
-            <strong>失败：</strong>抛出 V2NIMError 异常，包含错误码和错误描述
-          </li>
-          <li>
-            <strong>接收方回调：</strong>接收方会通过
-            V2NIMNotificationListener.onReceiveCustomNotification 回调收到通知
+            <strong>用途：</strong>发送不存储的实时通知，支持推送、反垃圾等配置
           </li>
         </ul>
       </Card>
@@ -748,22 +652,10 @@ const SendCustomNotificationPage = () => {
         }}
       >
         <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
-          <li>
-            <strong>确保已登录并完成数据同步</strong>
-          </li>
           <li>自定义通知不会存储在消息历史中，只用于实时通知</li>
-          <li>接收方需要监听 onReceiveCustomNotification 回调才能收到通知</li>
+          <li>接收方需要监听 onReceiveCustomNotification 回调才能收到</li>
           <li>通知内容最大支持4096个字符，超出会发送失败</li>
-          <li>
-            <strong>群组通知需要发送者是群成员</strong>
-          </li>
-          <li>推送配置只在接收方离线时生效</li>
-          <li>反垃圾配置需要在云信控制台开启反垃圾服务</li>
-          <li>
-            <strong>自定义通知主要用于实时业务通知，不建议用于聊天消息</strong>
-          </li>
-          <li>发送频率有限制，避免过于频繁发送</li>
-          <li>目标用户不存在或不可达时会发送失败</li>
+          <li>主要用于实时业务通知，不建议用于聊天消息</li>
         </ul>
       </Card>
     </div>

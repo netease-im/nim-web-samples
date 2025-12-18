@@ -98,9 +98,7 @@ const SceneModule: React.FC<SceneModuleProps> = ({
 
       {/* 标题和描述区域 */}
       <div className={styles.header}>
-        <Divider orientation="start" size="small">
-          {title}
-        </Divider>
+        <Divider orientation="start">{title}</Divider>
         {description && <p className={styles.description}>{description}</p>}
       </div>
 

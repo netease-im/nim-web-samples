@@ -325,30 +325,16 @@ const RejectAddApplicationPage = () => {
       <Card title="使用说明" style={{ marginTop: 16 }} size="small">
         <ul style={{ margin: 0, paddingLeft: 20 }}>
           <li>
-            <strong>自动获取申请列表:</strong> 页面加载时会自动调用 getAddApplicationList
-            获取待处理的好友申请
+            <strong>功能：</strong>拒绝他人发送的好友申请
           </li>
           <li>
-            <strong>申请状态筛选:</strong> 只显示状态为"待处理"(status=0)的申请
+            <strong>参数：</strong>application (好友申请对象), postscript (拒绝附言)
           </li>
           <li>
-            <strong>申请信息展示:</strong>
-            <ul style={{ marginTop: 4 }}>
-              <li>申请人账号ID</li>
-              <li>申请消息内容</li>
-              <li>申请时间</li>
-              <li>接收人账号ID</li>
-              <li>当前状态</li>
-            </ul>
+            <strong>返回值：</strong>无返回值，成功时触发好友事件回调
           </li>
           <li>
-            <strong>拒绝附言:</strong> 可以在拒绝好友申请时添加附言说明拒绝原因
-          </li>
-          <li>
-            <strong>实时刷新:</strong> 可以点击"刷新申请列表"按钮获取最新的申请信息
-          </li>
-          <li>
-            <strong>事件监听:</strong> 也可以通过监听 onFriendAddApplication 事件获取实时申请
+            <strong>用途：</strong>拒绝不想建立好友关系的申请，可添加拒绝原因
           </li>
         </ul>
       </Card>
@@ -371,16 +357,10 @@ const RejectAddApplicationPage = () => {
         }}
       >
         <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
-          <li>
-            <strong>确保已登录并完成数据同步</strong>
-          </li>
-          <li>拒绝好友申请后，申请状态将变为"已拒绝"</li>
-          <li>拒绝申请会触发相应的事件回调，请注意监听相关事件</li>
-          <li>
-            <strong>建议配合 V2NIMFriendService.on 监听好友事件获取实时通知</strong>
-          </li>
-          <li>如果申请列表为空，可能是没有待处理的申请或者数据同步未完成</li>
-          <li>拒绝附言是可选的，但建议填写以便申请人了解拒绝原因</li>
+          <li>页面自动获取待处理的好友申请列表</li>
+          <li>拒绝后申请状态将变为"已拒绝"</li>
+          <li>成功拒绝后会触发相应的事件回调</li>
+          <li>拒绝附言是可选的，建议填写以便申请人了解拒绝原因</li>
         </ul>
       </Card>
     </div>

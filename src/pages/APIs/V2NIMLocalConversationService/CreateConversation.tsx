@@ -167,12 +167,42 @@ const CreateConversationPage = () => {
       <Card title="使用说明" style={{ marginTop: 16 }} size="small">
         <ul style={{ margin: 0, paddingLeft: 20 }}>
           <li>
-            会话 id 的拼装参见{' '}
-            <a href="https://doc.yunxin.163.com/messaging2/references/web/typedoc/Latest/zh/v2/nim/index.html#v2nimconversationidutil">
-              V2NIMConversationIdUtil
-            </a>{' '}
-            系列接口
+            <strong>功能：</strong>创建本地会话，用于开始聊天对话
           </li>
+          <li>
+            <strong>参数：</strong>conversationId (会话ID字符串)
+          </li>
+          <li>
+            <strong>返回值：</strong>V2NIMConversation (创建的会话对象)
+          </li>
+          <li>
+            <strong>用途：</strong>建立P2P或群聊会话，为发送消息做准备
+          </li>
+        </ul>
+      </Card>
+
+      {/* 重要提醒 */}
+      <Card
+        title="⚠️ 重要提醒"
+        style={{
+          marginTop: 16,
+          border: '2px solid #ff9c6e',
+          backgroundColor: '#fff7e6',
+        }}
+        size="small"
+        styles={{
+          header: {
+            backgroundColor: '#ffe7ba',
+            color: '#d46b08',
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
+          <li>会话ID需要使用 V2NIMConversationIdUtil 工具类生成</li>
+          <li>P2P会话ID格式：p2p|账号ID，群聊会话ID格式：team|群组ID</li>
+          <li>创建会话后才能发送消息到该会话</li>
+          <li>可以点击"随机生成"按钮快速生成测试用的会话ID</li>
         </ul>
       </Card>
     </div>

@@ -290,66 +290,52 @@ setupMessageListeners();
         </Form.Item>
       </Form>
 
-      {/* 事件说明 */}
+      {/* 监听事件说明 */}
       <Card title="监听事件说明" style={{ marginTop: 16 }} size="small">
-        <div style={{ marginBottom: 16 }}>
-          <Text strong>消息发送事件：</Text>
-          <ul style={{ margin: '8px 0', paddingLeft: 20 }}>
-            <li>
-              <Text code>onSendMessage</Text> - 本端发送消息状态回调，可监听发送状态和附件上传状态
-            </li>
+        <div style={{ marginBottom: 12 }}>
+          <Text strong>onSendMessage</Text>
+          <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
+            <li>发送消息状态变化时触发</li>
+            <li>参数：message (消息对象)</li>
+            <li>触发时机：消息发送状态和附件上传状态变化</li>
           </ul>
         </div>
 
-        <div style={{ marginBottom: 16 }}>
-          <Text strong>消息接收事件：</Text>
-          <ul style={{ margin: '8px 0', paddingLeft: 20 }}>
-            <li>
-              <Text code>onReceiveMessages</Text> - 收到新消息
-            </li>
-            <li>
-              <Text code>onReceiveMessagesModified</Text> -
-              收到消息更新事件（在线同步、多端同步、漫游、流式消息更新）
-            </li>
+        <div style={{ marginBottom: 12 }}>
+          <Text strong>onReceiveMessages</Text>
+          <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
+            <li>收到新消息时触发</li>
+            <li>参数：messages (消息列表)</li>
+            <li>触发时机：接收到其他用户发送的消息</li>
           </ul>
         </div>
 
-        <div style={{ marginBottom: 16 }}>
-          <Text strong>已读回执事件：</Text>
-          <ul style={{ margin: '8px 0', paddingLeft: 20 }}>
-            <li>
-              <Text code>onReceiveP2PMessageReadReceipts</Text> - 收到点对点消息的已读回执
-            </li>
-            <li>
-              <Text code>onReceiveTeamMessageReadReceipts</Text> - 收到高级群消息的已读回执
-            </li>
+        <div style={{ marginBottom: 12 }}>
+          <Text strong>onReceiveP2PMessageReadReceipts / onReceiveTeamMessageReadReceipts</Text>
+          <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
+            <li>收到已读回执时触发</li>
+            <li>参数：readReceipts (已读回执列表)</li>
+            <li>触发时机：对方阅读消息后发送已读回执</li>
           </ul>
         </div>
 
-        <div style={{ marginBottom: 16 }}>
-          <Text strong>消息操作事件：</Text>
-          <ul style={{ margin: '8px 0', paddingLeft: 20 }}>
-            <li>
-              <Text code>onMessageRevokeNotifications</Text> - 收到消息撤回通知
-            </li>
-            <li>
-              <Text code>onMessageDeletedNotifications</Text> - 收到消息被删除通知
-            </li>
-            <li>
-              <Text code>onClearHistoryNotifications</Text> - 收到清空会话历史消息通知
-            </li>
+        <div style={{ marginBottom: 12 }}>
+          <Text strong>onMessageRevokeNotifications</Text>
+          <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
+            <li>消息撤回时触发</li>
+            <li>参数：notifications (撤回通知列表)</li>
+            <li>触发时机：本端或他端撤回消息</li>
           </ul>
         </div>
 
         <div>
-          <Text strong>消息扩展事件：</Text>
-          <ul style={{ margin: '8px 0', paddingLeft: 20 }}>
-            <li>
-              <Text code>onMessagePinNotification</Text> - 收到消息 pin 状态更新
-            </li>
-            <li>
-              <Text code>onMessageQuickCommentNotification</Text> - 收到消息快捷评论更新
-            </li>
+          <Text strong>其他事件</Text>
+          <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
+            <li>onMessageDeletedNotifications - 消息删除通知</li>
+            <li>onClearHistoryNotifications - 清空历史消息通知</li>
+            <li>onMessagePinNotification - 消息Pin状态更新</li>
+            <li>onMessageQuickCommentNotification - 消息快捷评论更新</li>
+            <li>onReceiveMessagesModified - 消息更新事件（多端同步）</li>
           </ul>
         </div>
       </Card>
@@ -357,20 +343,40 @@ setupMessageListeners();
       {/* 使用说明 */}
       <Card title="使用说明" style={{ marginTop: 16 }} size="small">
         <ul style={{ margin: 0, paddingLeft: 20 }}>
-          <li>本页面演示 V2NIMMessageService 的事件监听功能</li>
-          <li>设置监听后，相关的消息操作会触发对应事件并显示消息提示</li>
-          <li>对同一个事件 on 监听多次，都会生效并触发多次，使用时注意防止重复监听</li>
           <li>
-            建议在 <Text code>onDataSync</Text> 事件告知数据准备完毕后,
-            再使用消息模块数据，以保证数据完整性
+            <strong>功能：</strong>演示 V2NIMMessageService 的事件监听功能
           </li>
-          <li>使用"取消所有监听"可以一次性移除所有已设置的监听器</li>
           <li>
-            <Text type="warning">
-              注意：设置监听后，可以去其他消息相关页面进行操作来触发事件（如发送消息、撤回消息、删除消息等）
-            </Text>
+            <strong>触发方式：</strong>去消息相关页面进行操作（发送、撤回、删除消息等）
           </li>
-          <li>所有事件都会在控制台输出详细信息，方便调试和学习</li>
+          <li>
+            <strong>用途：</strong>监听消息状态变化，实时更新界面和处理业务逻辑
+          </li>
+        </ul>
+      </Card>
+
+      {/* 重要提醒 */}
+      <Card
+        title="⚠️ 重要提醒"
+        style={{
+          marginTop: 16,
+          border: '2px solid #ff9c6e',
+          backgroundColor: '#fff7e6',
+        }}
+        size="small"
+        styles={{
+          header: {
+            backgroundColor: '#ffe7ba',
+            color: '#d46b08',
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
+          <li>重复监听同一事件会导致多次触发，建议先取消监听再设置</li>
+          <li>建议在 onDataSync 数据同步完成后再使用消息模块</li>
+          <li>消息服务事件较多，根据业务需要选择监听相关事件</li>
+          <li>所有事件详情都会在控制台输出，方便调试和学习</li>
         </ul>
       </Card>
     </div>

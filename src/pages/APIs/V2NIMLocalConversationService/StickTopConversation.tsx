@@ -241,11 +241,42 @@ const StickTopConversationPage = () => {
       {/* 使用说明 */}
       <Card title="使用说明" style={{ marginTop: 16 }} size="small">
         <ul style={{ margin: 0, paddingLeft: 20 }}>
+          <li>
+            <strong>功能：</strong>设置或取消会话的置顶状态
+          </li>
+          <li>
+            <strong>参数：</strong>conversationId (会话ID), stickTop (是否置顶)
+          </li>
+          <li>
+            <strong>返回值：</strong>无返回值，操作成功后触发相关事件
+          </li>
+          <li>
+            <strong>用途：</strong>管理会话优先级，置顶重要会话便于快速访问
+          </li>
+        </ul>
+      </Card>
+
+      {/* 重要提醒 */}
+      <Card
+        title="⚠️ 重要提醒"
+        style={{
+          marginTop: 16,
+          border: '2px solid #ff9c6e',
+          backgroundColor: '#fff7e6',
+        }}
+        size="small"
+        styles={{
+          header: {
+            backgroundColor: '#ffe7ba',
+            color: '#d46b08',
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
           <li>置顶操作会将会话固定在会话列表的顶部</li>
-          <li>取消置顶操作会将会话从置顶状态恢复到正常状态</li>
-          <li>已置顶的会话在选择框中会显示 📌 标记</li>
-          <li>操作成功会触发 V2NIMLocalConversationListener.onConversationChanged 事件</li>
-          <li>置顶状态会影响会话列表的排序，置顶会话会排在前面</li>
+          <li>置顶状态会影响会话列表的排序，置顶会话排在前面</li>
+          <li>操作成功会触发 onConversationChanged 事件</li>
         </ul>
       </Card>
     </div>

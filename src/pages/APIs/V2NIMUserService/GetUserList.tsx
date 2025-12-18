@@ -213,6 +213,24 @@ const GetUserListPage = () => {
         </Form.Item>
       </Form>
 
+      {/* 使用说明 */}
+      <Card title="使用说明" style={{ marginTop: 16 }} size="small">
+        <ul style={{ margin: 0, paddingLeft: 20 }}>
+          <li>
+            <strong>功能：</strong>获取指定账号的用户信息列表
+          </li>
+          <li>
+            <strong>参数：</strong>accountIds (账号ID数组，最多150个)
+          </li>
+          <li>
+            <strong>返回值：</strong>V2NIMUser[] (用户信息列表)
+          </li>
+          <li>
+            <strong>用途：</strong>批量获取用户基本信息，如昵称、头像等
+          </li>
+        </ul>
+      </Card>
+
       {/* 重要提醒 */}
       <Card
         title="⚠️ 重要提醒"
@@ -231,29 +249,10 @@ const GetUserListPage = () => {
         }}
       >
         <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
-          <li>
-            <strong>此接口的数据来源乃数据同步时下发的某好友的用户信息</strong>
-          </li>
-          <li>
-            因此调用时机依然需要等待 V2NIMLoginService 的 onDataSync 事件, 数据同步完毕后, 才能调用.
-          </li>
-          <li>而缓存里查不到的账号回去发协议查一遍后返回, 接着存入内存缓存</li>
-          <li>
-            <strong>
-              鉴于用户的信息可能做不到事实更新, 所以推荐在有需要的情况下用另一个接口
-              getUserListFromCloud 来确保一定从服务器获取最新的信息
-            </strong>
-          </li>
-        </ul>
-      </Card>
-
-      {/* 使用说明 */}
-      <Card title="使用说明" style={{ marginTop: 16 }} size="small">
-        <ul style={{ margin: 0, paddingLeft: 20 }}>
-          <li>支持添加多个账号ID，最多支持150个账号</li>
-          <li>账号ID不能为空且不能重复</li>
-          <li>返回结果包含用户的基本信息如昵称、头像等</li>
-          <li>可以点击"添加示例账号"快速添加测试用的账号ID</li>
+          <li>数据来源于登录数据同步时下发的用户信息</li>
+          <li>需要等待 onDataSync 数据同步完成后才能调用</li>
+          <li>缓存中没有的账号会发协议查询后存入缓存</li>
+          <li>如需最新信息，建议使用 getUserListFromCloud 从服务器获取</li>
         </ul>
       </Card>
     </div>

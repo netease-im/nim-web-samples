@@ -8,7 +8,6 @@ import {
   Input,
   Select,
   Space,
-  Typography,
   Upload,
   UploadFile,
   message,
@@ -20,8 +19,6 @@ import { useEffect, useRef, useState } from 'react';
 import { to } from '@/utils/errorHandle';
 
 import styles from '../nim.module.less';
-
-const { Text } = Typography;
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -841,18 +838,43 @@ const SendMessagePage = () => {
       {/* 使用说明 */}
       <Card title="使用说明" style={{ marginTop: 16 }} size="small">
         <ul style={{ margin: 0, paddingLeft: 20 }}>
-          <li>首先在第一个表单中选择消息类型并填写相应参数，然后点击"创建消息"</li>
-          <li>消息创建成功后，在第二个表单中选择会话并点击"发送消息"</li>
-          <li>可以启用高级配置来设置消息的额外参数，如推送配置、反垃圾配置等</li>
-          <li>支持文本、图片、音频、视频、文件、位置、自定义等多种消息类型</li>
-          <li>文件类型消息会自动获取文件信息（如图片尺寸、音视频时长等）</li>
-          <li>发送成功会触发 V2NIMMessageListener.onSendMessage 事件</li>
           <li>
-            <Text type="warning">
-              注意: 如果是小程序/uniapp, 那么是用 chooseImage 等方法选到文件, 然后
-              createImageMessage 第一参数应该传入起 filePath 字符串
-            </Text>
+            <strong>功能：</strong>创建并发送各种类型的消息到指定会话
           </li>
+          <li>
+            <strong>参数：</strong>message (消息对象), conversationId (会话ID), params (可选配置)
+          </li>
+          <li>
+            <strong>返回值：</strong>V2NIMMessage (发送成功的消息对象)
+          </li>
+          <li>
+            <strong>用途：</strong>支持文本、图片、音频、视频、文件、位置、自定义等消息类型
+          </li>
+        </ul>
+      </Card>
+
+      {/* 重要提醒 */}
+      <Card
+        title="⚠️ 重要提醒"
+        style={{
+          marginTop: 16,
+          border: '2px solid #ff9c6e',
+          backgroundColor: '#fff7e6',
+        }}
+        size="small"
+        styles={{
+          header: {
+            backgroundColor: '#ffe7ba',
+            color: '#d46b08',
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
+          <li>需要先创建消息对象，再发送到指定会话</li>
+          <li>文件类型消息会自动获取文件信息（尺寸、时长等）</li>
+          <li>发送成功会触发 onSendMessage 事件</li>
+          <li>小程序/uniapp 中文件参数传入 filePath 字符串</li>
         </ul>
       </Card>
     </div>

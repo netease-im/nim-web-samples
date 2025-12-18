@@ -254,12 +254,43 @@ const MarkConversationReadPage = () => {
       {/* 使用说明 */}
       <Card title="使用说明" style={{ marginTop: 16 }} size="small">
         <ul style={{ margin: 0, paddingLeft: 20 }}>
+          <li>
+            <strong>功能：</strong>标记指定会话为已读状态
+          </li>
+          <li>
+            <strong>参数：</strong>conversationId (会话ID字符串)
+          </li>
+          <li>
+            <strong>返回值：</strong>number (已读时间戳)
+          </li>
+          <li>
+            <strong>用途：</strong>清除会话未读数，更新已读状态，支持多端同步
+          </li>
+        </ul>
+      </Card>
+
+      {/* 重要提醒 */}
+      <Card
+        title="⚠️ 重要提醒"
+        style={{
+          marginTop: 16,
+          border: '2px solid #ff9c6e',
+          backgroundColor: '#fff7e6',
+        }}
+        size="small"
+        styles={{
+          header: {
+            backgroundColor: '#ffe7ba',
+            color: '#d46b08',
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
           <li>标记会话已读会将该会话的未读数清零</li>
-          <li>操作会返回一个时间戳，表示本账号已读过该时间戳之前的所有消息</li>
-          <li>有未读消息的会话在选择框中会显示 🔴 和未读数，无未读消息会显示 ✅</li>
-          <li>操作成功会触发 V2NIMLocalConversationListener.onConversationReadTimeUpdated 事件</li>
-          <li>该功能支持 P2P、群聊、超大群等会话类型</li>
-          <li>多端同步：该操作会同步到其他登录设备</li>
+          <li>有未读消息的会话显示 🔴 和未读数，无未读消息显示 ✅</li>
+          <li>操作成功会触发 onConversationReadTimeUpdated 事件</li>
+          <li>该操作会同步到其他登录设备</li>
         </ul>
       </Card>
     </div>

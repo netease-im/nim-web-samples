@@ -197,41 +197,41 @@ setupLocalConversationListeners();
         </Form.Item>
       </Form>
 
-      {/* 事件说明 */}
+      {/* 监听事件说明 */}
       <Card title="监听事件说明" style={{ marginTop: 16 }} size="small">
-        <div style={{ marginBottom: 16 }}>
-          <Text strong>同步相关事件：</Text> 请直接使用 V2NIMLoginService 模块的 onDataSync
-          事件来监听数据是否准备完毕
+        <div style={{ marginBottom: 12 }}>
+          <Text strong>onConversationCreated</Text>
+          <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
+            <li>会话被创建时触发</li>
+            <li>参数：conversation (会话对象)</li>
+            <li>触发时机：创建新会话时</li>
+          </ul>
         </div>
 
-        <div style={{ marginBottom: 16 }}>
-          <Text strong>会话操作事件：</Text>
-          <ul style={{ margin: '8px 0', paddingLeft: 20 }}>
-            <li>
-              <Text code>onConversationCreated</Text> - 会话被创建
-            </li>
-            <li>
-              <Text code>onConversationDeleted</Text> - 会话被删除
-            </li>
-            <li>
-              <Text code>onConversationChanged</Text> -
-              会话有更新（置顶、免打扰、扩展字段、未读数等）
-            </li>
+        <div style={{ marginBottom: 12 }}>
+          <Text strong>onConversationDeleted</Text>
+          <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
+            <li>会话被删除时触发</li>
+            <li>参数：conversationIds (会话ID列表)</li>
+            <li>触发时机：删除会话时</li>
+          </ul>
+        </div>
+
+        <div style={{ marginBottom: 12 }}>
+          <Text strong>onConversationChanged</Text>
+          <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
+            <li>会话信息更新时触发</li>
+            <li>参数：conversationList (会话列表)</li>
+            <li>触发时机：会话置顶、免打扰、扩展字段、未读数等变化</li>
           </ul>
         </div>
 
         <div>
-          <Text strong>未读数相关事件：</Text>
-          <ul style={{ margin: '8px 0', paddingLeft: 20 }}>
-            <li>
-              <Text code>onTotalUnreadCountChanged</Text> - 总未读数发生变化
-            </li>
-            <li>
-              <Text code>onUnreadCountChangedByFilter</Text> - 指定过滤条件的未读数发生变化
-            </li>
-            <li>
-              <Text code>onConversationReadTimeUpdated</Text> - 会话已读时间戳更新
-            </li>
+          <Text strong>未读数相关事件</Text>
+          <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
+            <li>onTotalUnreadCountChanged - 总未读数变化</li>
+            <li>onUnreadCountChangedByFilter - 过滤条件未读数变化</li>
+            <li>onConversationReadTimeUpdated - 会话已读时间更新</li>
           </ul>
         </div>
       </Card>
@@ -239,20 +239,40 @@ setupLocalConversationListeners();
       {/* 使用说明 */}
       <Card title="使用说明" style={{ marginTop: 16 }} size="small">
         <ul style={{ margin: 0, paddingLeft: 20 }}>
-          <li>本页面演示 V2NIMLocalConversationService 的事件监听功能</li>
-          <li>设置监听后，相关的会话操作会触发对应事件并显示消息提示</li>
-          <li>对同一个事件 on 监听多次，都会生效并触发多次，使用时注意防止重复监听</li>
           <li>
-            建议在 <Text code>onDataSync</Text> 事件告知数据准备完毕后,
-            再使用会话模块数据，以保证数据完整性
+            <strong>功能：</strong>演示 V2NIMLocalConversationService 的事件监听功能
           </li>
-          <li>使用"取消所有监听"可以一次性移除所有已设置的监听器</li>
           <li>
-            <Text type="warning">
-              注意：设置监听后，可以去其他会话相关页面进行操作来触发事件（如创建会话、删除会话、置顶会话、标记已读等）
-            </Text>
+            <strong>触发方式：</strong>去会话相关页面进行操作（创建、删除、置顶、标记已读等）
           </li>
-          <li>所有事件都会在控制台输出详细信息，方便调试和学习</li>
+          <li>
+            <strong>用途：</strong>监听会话状态变化，实时更新界面和处理业务逻辑
+          </li>
+        </ul>
+      </Card>
+
+      {/* 重要提醒 */}
+      <Card
+        title="⚠️ 重要提醒"
+        style={{
+          marginTop: 16,
+          border: '2px solid #ff9c6e',
+          backgroundColor: '#fff7e6',
+        }}
+        size="small"
+        styles={{
+          header: {
+            backgroundColor: '#ffe7ba',
+            color: '#d46b08',
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
+          <li>重复监听同一事件会导致多次触发，建议先取消监听再设置</li>
+          <li>建议在 onDataSync 数据同步完成后再使用会话模块</li>
+          <li>会话操作会实时触发相关事件，便于界面状态同步</li>
+          <li>所有事件详情都会在控制台输出，方便调试和学习</li>
         </ul>
       </Card>
     </div>

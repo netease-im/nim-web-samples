@@ -1,5 +1,4 @@
-import { Button, Card, Form, Input, Space, Table, Tag, message } from 'antd';
-import { V2NIMFriend } from 'nim-web-sdk-ng/dist/v2/NIM_BROWSER_SDK/V2NIMFriendService';
+import { Button, Card, Form, Input, Space, Tag, message } from 'antd';
 import { useState } from 'react';
 
 import { to } from '@/utils/errorHandle';
@@ -218,6 +217,24 @@ const GetFriendByIdsPage = () => {
         </Form.Item>
       </Form>
 
+      {/* 使用说明 */}
+      <Card title="使用说明" style={{ marginTop: 16 }} size="small">
+        <ul style={{ margin: 0, paddingLeft: 20 }}>
+          <li>
+            <strong>功能：</strong>根据指定的账号ID列表获取对应的好友信息
+          </li>
+          <li>
+            <strong>参数：</strong>accountIds (账号ID数组)
+          </li>
+          <li>
+            <strong>返回值：</strong>V2NIMFriend[] (好友信息列表)
+          </li>
+          <li>
+            <strong>用途：</strong>批量获取多个好友的详细信息和用户资料
+          </li>
+        </ul>
+      </Card>
+
       {/* 重要提醒 */}
       <Card
         title="⚠️ 重要提醒"
@@ -236,48 +253,10 @@ const GetFriendByIdsPage = () => {
         }}
       >
         <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
-          <li>
-            <strong>此接口根据指定的账号ID列表获取对应的好友信息</strong>
-          </li>
-          <li>只返回ID存在且为好友关系的用户信息，非好友用户不会返回</li>
-          <li>返回结果的顺序与输入参数的顺序保持一致</li>
-          <li>调用时机需要等待 V2NIMLoginService 的 onDataSync 事件，数据同步完毕后才能调用</li>
-          <li>
-            <strong>如果某个账号ID不是你的好友，该账号信息不会出现在返回结果中</strong>
-          </li>
-        </ul>
-      </Card>
-
-      {/* 使用说明 */}
-      <Card title="使用说明" style={{ marginTop: 16 }} size="small">
-        <ul style={{ margin: 0, paddingLeft: 20 }}>
-          <li>支持添加多个好友账号ID进行批量查询</li>
-          <li>账号ID不能为空且不能重复</li>
-          <li>只有与当前用户存在好友关系的账号才会返回信息</li>
-          <li>返回结果包含好友的详细信息如备注、用户资料等</li>
-          <li>可以点击"添加示例账号"快速添加测试用的账号ID</li>
-          <li>表格支持分页和排序，方便查看大量好友数据</li>
-        </ul>
-      </Card>
-
-      {/* 接口特点说明 */}
-      <Card title="接口特点" style={{ marginTop: 16 }} size="small">
-        <ul style={{ margin: 0, paddingLeft: 20 }}>
-          <li>
-            <strong>精确查询：</strong> 根据指定的账号ID精确获取好友信息
-          </li>
-          <li>
-            <strong>好友关系验证：</strong> 只返回确实存在好友关系的用户信息
-          </li>
-          <li>
-            <strong>顺序保持：</strong> 返回结果的顺序与输入参数顺序一致
-          </li>
-          <li>
-            <strong>批量处理：</strong> 支持一次查询多个好友的信息
-          </li>
-          <li>
-            <strong>完整信息：</strong> 返回的 V2NIMFriend 对象包含好友的完整信息和关联的用户资料
-          </li>
+          <li>只返回存在好友关系的用户信息，非好友不会返回</li>
+          <li>需要等待 onDataSync 数据同步完成后才能调用</li>
+          <li>返回结果顺序与输入参数顺序保持一致</li>
+          <li>支持批量查询，提高查询效率</li>
         </ul>
       </Card>
     </div>

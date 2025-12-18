@@ -21,6 +21,7 @@ interface InitFormValues {
   enableAbtest: boolean;
   enableLogger: boolean;
   enableCloudStorage: boolean;
+  enableCloudConversation: boolean;
 }
 
 const defaultInstanceParam1 = {
@@ -66,6 +67,7 @@ const getDefaultFormValues = (): InitFormValues => ({
   enableAbtest: true,
   enableLogger: true,
   enableCloudStorage: true,
+  enableCloudConversation: false,
 });
 
 const NIMInitForm = ({ onInitComplete }: NIMInitFormProps) => {
@@ -78,6 +80,7 @@ const NIMInitForm = ({ onInitComplete }: NIMInitFormProps) => {
       appkey: values.appkey,
       debugLevel: values.debugLevel,
       apiVersion: 'v2',
+      enableV2CloudConversation: values.enableCloudConversation,
     };
   };
 
@@ -112,7 +115,6 @@ const NIMInitForm = ({ onInitComplete }: NIMInitFormProps) => {
       // @ts-ignore
       param2.cloudStorageConfig = defaultInstanceParam2.cloudStorageConfig;
     }
-
     return param2;
   };
 
@@ -139,6 +141,7 @@ const NIMInitForm = ({ onInitComplete }: NIMInitFormProps) => {
           enableAbtest: !!param2.abtestConfig,
           enableLogger: !!param2.loggerConfig,
           enableCloudStorage: !!param2.cloudStorageConfig,
+          enableCloudConversation: !!param1.enableV2CloudConversation,
         };
       }
     } catch (error) {
@@ -389,6 +392,15 @@ const NIMInitForm = ({ onInitComplete }: NIMInitFormProps) => {
       <Form.Item
         name="enableCloudStorage"
         label="云存储"
+        valuePropName="checked"
+        className={styles.switchItem}
+      >
+        <Switch />
+      </Form.Item>
+
+      <Form.Item
+        name="enableCloudConversation"
+        label="云端会话"
         valuePropName="checked"
         className={styles.switchItem}
       >

@@ -1,4 +1,4 @@
-import { Alert, Button, Card, Form, Input, Select, Space, Table, Tag, message } from 'antd';
+import { Button, Card, Form, Input, Select, Space, message } from 'antd';
 import { V2NIMLocalConversation } from 'nim-web-sdk-ng/dist/v2/NIM_BROWSER_SDK/V2NIMLocalConversationService';
 import { V2NIMMessage } from 'nim-web-sdk-ng/dist/v2/NIM_BROWSER_SDK/V2NIMMessageService';
 import { useEffect, useRef, useState } from 'react';
@@ -443,12 +443,43 @@ const RevokeMessagePage = () => {
       {/* 使用说明 */}
       <Card title="使用说明" style={{ marginTop: 16 }} size="small">
         <ul style={{ margin: 0, paddingLeft: 20 }}>
+          <li>
+            <strong>功能：</strong>撤回指定的消息
+          </li>
+          <li>
+            <strong>参数：</strong>message (消息对象), revokeParams (撤回配置)
+          </li>
+          <li>
+            <strong>返回值：</strong>无返回值，撤回成功后触发相关事件
+          </li>
+          <li>
+            <strong>用途：</strong>撤回已发送的消息，支持设置撤回原因和推送配置
+          </li>
+        </ul>
+      </Card>
+
+      {/* 重要提醒 */}
+      <Card
+        title="⚠️ 重要提醒"
+        style={{
+          marginTop: 16,
+          border: '2px solid #ff9c6e',
+          backgroundColor: '#fff7e6',
+        }}
+        size="small"
+        styles={{
+          header: {
+            backgroundColor: '#ffe7ba',
+            color: '#d46b08',
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
           <li>只能撤回自己发送的消息，通常只能撤回2分钟内的消息</li>
           <li>撤回后对方会收到撤回通知，显示您设置的附言</li>
+          <li>撤回成功会触发 onMessageRevoked 事件</li>
           <li>服务端扩展和推送载荷需要使用JSON格式</li>
-          <li>撤回成功会触发 V2NIMMessageListener.onMessageRevoked 事件</li>
-          <li>选择会话后会自动加载该会话中您发送的消息</li>
-          <li>表格中标记为"超时"的消息可能无法撤回，但仍可尝试</li>
         </ul>
       </Card>
     </div>

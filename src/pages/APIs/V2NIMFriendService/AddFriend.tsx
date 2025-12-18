@@ -1,4 +1,4 @@
-import { Button, Card, Form, Input, InputNumber, Space, message } from 'antd';
+import { Button, Card, Form, Input, Select, Space, message } from 'antd';
 import { useState } from 'react';
 
 import { to } from '@/utils/errorHandle';
@@ -137,7 +137,10 @@ const AddFriendPage = () => {
         </Form.Item>
 
         <Form.Item label="添加模式" name={['params', 'addMode']}>
-          <InputNumber min={0} max={2} placeholder="添加模式" style={{ width: '100%' }} />
+          <Select placeholder="请选择添加模式" style={{ width: '100%' }}>
+            <Select.Option value={1}>直接加为好友（无需验证）</Select.Option>
+            <Select.Option value={2}>需要对方验证</Select.Option>
+          </Select>
         </Form.Item>
 
         <Form.Item label="申请消息" name={['params', 'postscript']}>
@@ -163,19 +166,17 @@ const AddFriendPage = () => {
       <Card title="使用说明" style={{ marginTop: 16 }} size="small">
         <ul style={{ margin: 0, paddingLeft: 20 }}>
           <li>
-            <strong>好友账号ID:</strong> 要添加为好友的用户账号ID
+            <strong>功能：</strong>向指定用户发送好友申请
           </li>
           <li>
-            <strong>添加模式:</strong>
-            <ul style={{ marginTop: 4 }}>
-              <li>1 - 直接加为好友（无需验证）</li>
-              <li>2 - 需要对方验证</li>
-            </ul>
+            <strong>参数：</strong>accountId (用户ID), addMode (添加模式), postscript (申请消息)
           </li>
           <li>
-            <strong>申请消息:</strong> 发送给对方的好友申请消息，最多200字符
+            <strong>返回值：</strong>无返回值，成功时触发好友事件回调
           </li>
-          <li>添加成功后，会触发相应的好友事件回调</li>
+          <li>
+            <strong>用途：</strong>建立好友关系，支持直接添加或验证添加两种模式
+          </li>
         </ul>
       </Card>
 
@@ -197,14 +198,9 @@ const AddFriendPage = () => {
         }}
       >
         <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
-          <li>
-            <strong>添加好友前请确保目标账号存在且有效</strong>
-          </li>
-          <li>不同的添加模式会影响添加好友的流程和结果</li>
-          <li>添加好友操作会触发相应的事件回调，请注意监听相关事件</li>
-          <li>
-            <strong>建议先通过 V2NIMUserService.getUserList 验证目标账号是否存在</strong>
-          </li>
+          <li>添加前请确保目标账号存在且有效</li>
+          <li>不同添加模式会影响好友申请的处理流程</li>
+          <li>成功添加好友后会触发相应的事件回调</li>
         </ul>
       </Card>
     </div>

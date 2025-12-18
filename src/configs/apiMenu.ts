@@ -45,22 +45,41 @@ export const apiMenuItems: MenuItemWithRender[] = [
       { label: '设置会话监听事件', key: 'V2NIMLocalConversationService-on' },
     ],
   },
-  // {
-  //   label: '会话服务',
-  //   key: 'V2NIMConversationService',
-  //   children: [
-  //     { label: '获取服务端会话', key: 'V2NIMConversationService-getConversation' },
-  //     { label: '同步会话', key: 'V2NIMConversationService-syncConversation' },
-  //   ],
-  // },
-  // {
-  //   label: '会话分组服务',
-  //   key: 'V2NIMConversationGroupService',
-  //   children: [
-  //     { label: '创建会话分组', key: 'V2NIMConversationGroupService-createConversationGroup' },
-  //     { label: '删除会话分组', key: 'V2NIMConversationGroupService-deleteConversationGroup' },
-  //   ],
-  // },
+  {
+    label: '云端会话服务',
+    key: 'V2NIMConversationService',
+    children: [
+      {
+        label: '获取会话列表',
+        key: 'V2NIMConversationService-getConversationList',
+      },
+      { label: '创建云端会话', key: 'V2NIMConversationService-createConversation' },
+      { label: '删除云端会话', key: 'V2NIMConversationService-deleteConversation' },
+      { label: '置顶云端会话', key: 'V2NIMConversationService-stickTopConversation' },
+      { label: '获取总未读数', key: 'V2NIMConversationService-getTotalUnreadCount' },
+      { label: '标记会话已读', key: 'V2NIMConversationService-markConversationRead' },
+      { label: '设置会话监听事件', key: 'V2NIMConversationService-on' },
+    ],
+  },
+  {
+    label: '云端会话分组服务',
+    key: 'V2NIMConversationGroupService',
+    children: [
+      { label: '创建会话分组', key: 'V2NIMConversationGroupService-createConversationGroup' },
+      { label: '删除会话分组', key: 'V2NIMConversationGroupService-deleteConversationGroup' },
+      { label: '更新会话分组', key: 'V2NIMConversationGroupService-updateConversationGroup' },
+      {
+        label: '添加会话到相应分组下面',
+        key: 'V2NIMConversationGroupService-addConversationsToGroup',
+      },
+      {
+        label: '从会话分组删除相应会话',
+        key: 'V2NIMConversationGroupService-removeConversationsFromGroup',
+      },
+      { label: '获取会话分组列表', key: 'V2NIMConversationGroupService-getConversationGroupList' },
+      { label: '设置会话监听事件', key: 'V2NIMConversationGroupService-on' },
+    ],
+  },
   {
     label: '消息服务',
     key: 'V2NIMMessageService',
@@ -73,14 +92,18 @@ export const apiMenuItems: MenuItemWithRender[] = [
       { label: '设置消息监听事件', key: 'V2NIMMessageService-on' },
     ],
   },
-  // {
-  //   label: '存储服务',
-  //   key: 'V2NIMStorageService',
-  //   children: [
-  //     { label: '上传文件', key: 'V2NIMStorageService-upload' },
-  //     { label: '获取存储场景列表', key: 'V2NIMStorageService-getStorageSceneList' },
-  //   ],
-  // },
+  {
+    label: '存储服务',
+    key: 'V2NIMStorageService',
+    children: [
+      { label: '添加存储场景', key: 'V2NIMStorageService-addCustomStorageScene' },
+      { label: '上传文件', key: 'V2NIMStorageService-uploadFile' },
+      { label: '上传文件并返回媒体信息', key: 'V2NIMStorageService-uploadFileWithMetaInfo' },
+      { label: '短链接转长链接', key: 'V2NIMStorageService-shortUrlToLong' },
+      { label: '生成缩略图链接', key: 'V2NIMStorageService-getImageThumbUrl' },
+      { label: '生成视频封面图链接', key: 'V2NIMStorageService-getVideoCoverUrl' },
+    ],
+  },
   // {
   //   label: '客户端反垃圾',
   //   key: 'V2NIMClientAntispamUtil',
@@ -136,14 +159,24 @@ export const apiMenuItems: MenuItemWithRender[] = [
       { label: '设置监听事件', key: 'V2NIMTeamService-on' },
     ],
   },
-  // {
-  //   label: '设置服务',
-  //   key: 'V2NIMSettingService',
-  //   children: [
-  //     { label: '设置推送配置', key: 'V2NIMSettingService-setPushConfig' },
-  //     { label: '获取推送配置', key: 'V2NIMSettingService-getPushConfig' },
-  //   ],
-  // },
+  {
+    label: '设置服务',
+    key: 'V2NIMSettingService',
+    children: [
+      { label: '获取会话消息免打扰状态', key: 'V2NIMSettingService-getConversationMuteStatus' },
+      { label: '设置群消息免打扰模式', key: 'V2NIMSettingService-setTeamMessageMuteMode' },
+      { label: '设置点对点消息免打扰模式', key: 'V2NIMSettingService-setP2PMessageMuteMode' },
+      {
+        label: '设置当桌面端在线时，移动端是否需要推送',
+        key: 'V2NIMSettingService-setPushMobileOnDesktopOnline',
+      },
+      {
+        label: '获取当桌面端在线时，移动端是否需要推送配置',
+        key: 'V2NIMSettingService-getPushMobileOnDesktopOnline',
+      },
+      { label: '设置监听事件', key: 'V2NIMSettingService-on' },
+    ],
+  },
   // {
   //   label: 'AI 机器人',
   //   key: 'V2NIMAIService',
@@ -167,14 +200,17 @@ export const apiMenuItems: MenuItemWithRender[] = [
       { label: '设置监听事件', key: 'V2NIMNotificationService-on' },
     ],
   },
-  // {
-  //   label: '事件订阅',
-  //   key: 'V2NIMSubscriptionService',
-  //   children: [
-  //     { label: '订阅事件', key: 'V2NIMSubscriptionService-subscribe' },
-  //     { label: '取消订阅', key: 'V2NIMSubscriptionService-unsubscribe' },
-  //   ],
-  // },
+  {
+    label: '事件订阅',
+    key: 'V2NIMSubscriptionService',
+    children: [
+      { label: '订阅用户状态', key: 'V2NIMSubscriptionService-subscribeUserStatus' },
+      { label: '取消订阅用户状态', key: 'V2NIMSubscriptionService-unsubscribeUserStatus' },
+      { label: '发布自定义的用户状态', key: 'V2NIMSubscriptionService-publishCustomUserStatus' },
+      { label: '查询状态订阅', key: 'V2NIMSubscriptionService-queryUserStatusSubscriptions' },
+      { label: '设置监听事件', key: 'V2NIMSubscriptionService-on' },
+    ],
+  },
 
   // {
   //   label: '服务代理',

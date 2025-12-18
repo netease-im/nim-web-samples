@@ -283,6 +283,24 @@ const UpdateSelfUserProfilePage = () => {
         </Form.Item>
       </Form>
 
+      {/* 使用说明 */}
+      <Card title="使用说明" style={{ marginTop: 16 }} size="small">
+        <ul style={{ margin: 0, paddingLeft: 20 }}>
+          <li>
+            <strong>功能：</strong>更新当前登录用户的个人资料信息
+          </li>
+          <li>
+            <strong>参数：</strong>用户资料对象 (包含昵称、头像、签名等字段)
+          </li>
+          <li>
+            <strong>返回值：</strong>V2NIMUser (更新后的用户信息)
+          </li>
+          <li>
+            <strong>用途：</strong>修改个人资料，支持部分字段更新
+          </li>
+        </ul>
+      </Card>
+
       {/* 重要提醒 */}
       <Card
         title="⚠️ 重要提醒"
@@ -301,30 +319,10 @@ const UpdateSelfUserProfilePage = () => {
         }}
       >
         <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
-          <li>
-            <strong>调用该 API 后，会触发 onUserProfileChanged 事件</strong>
-          </li>
-          <li>
-            <strong>表单会自动加载当前用户的资料信息作为初始值</strong>
-          </li>
-          <li>为空的字段表示不修改该字段，只有填写了内容的字段才会被更新</li>
-          <li>性别字段：0-保密，1-男性，2-女性，设置其他值服务器会返回错误</li>
-          <li>手机号码：非中国大陆手机号码需要填写国家代码，如美国：+1-xxxxxxxxxx</li>
-        </ul>
-      </Card>
-
-      {/* 使用说明 */}
-      <Card title="使用说明" style={{ marginTop: 16 }} size="small">
-        <ul style={{ margin: 0, paddingLeft: 20 }}>
-          <li>页面加载时会自动获取当前用户的资料信息并填入表单</li>
-          <li>所有字段都是可选的，只需修改需要更新的字段</li>
-          <li>昵称不能为空字符串，如果要修改昵称，必须提供有效内容</li>
-          <li>头像地址需要是有效的URL，长度不超过1024字节</li>
-          <li>签名长度限制为256字符</li>
-          <li>邮箱长度限制为64字符，需要符合邮箱格式</li>
-          <li>生日格式建议为：YYYY-MM-DD，长度限制为16字符</li>
-          <li>扩展字段建议使用JSON格式，长度限制为1024字符</li>
-          <li>点击"重置"按钮会重新加载当前用户的最新资料信息</li>
+          <li>调用后会触发 onUserProfileChanged 事件</li>
+          <li>表单会自动加载当前用户的资料信息作为初始值</li>
+          <li>为空的字段表示不修改，只有填写了内容的字段才会被更新</li>
+          <li>性别字段：0-保密，1-男性，2-女性</li>
         </ul>
       </Card>
     </div>

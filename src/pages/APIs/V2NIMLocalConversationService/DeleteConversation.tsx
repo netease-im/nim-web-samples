@@ -239,10 +239,43 @@ const DeleteConversationPage = () => {
       {/* 使用说明 */}
       <Card title="使用说明" style={{ marginTop: 16 }} size="small">
         <ul style={{ margin: 0, paddingLeft: 20 }}>
+          <li>
+            <strong>功能：</strong>删除指定的本地会话记录
+          </li>
+          <li>
+            <strong>参数：</strong>conversationId (会话ID), clearMessage (是否清除消息)
+          </li>
+          <li>
+            <strong>返回值：</strong>无返回值，删除成功后触发相关事件
+          </li>
+          <li>
+            <strong>用途：</strong>从本地移除不需要的会话，可选择是否删除历史消息
+          </li>
+        </ul>
+      </Card>
+
+      {/* 重要提醒 */}
+      <Card
+        title="⚠️ 重要提醒"
+        style={{
+          marginTop: 16,
+          border: '2px solid #ff9c6e',
+          backgroundColor: '#fff7e6',
+        }}
+        size="small"
+        styles={{
+          header: {
+            backgroundColor: '#ffe7ba',
+            color: '#d46b08',
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
           <li>删除会话操作会从本地数据库中移除会话记录</li>
-          <li>如果勾选"清除消息"，会同时删除会话对应的本地历史消息</li>
-          <li>如果需要删除云端的漫游/历史消息，需要调用 V2NIMMessageService.clearHistoryMessage</li>
-          <li>删除成功会触发 V2NIMLocalConversationListener.onConversationDeleted 事件</li>
+          <li>勾选"清除消息"会同时删除会话对应的本地历史消息</li>
+          <li>删除云端漫游消息需要调用 clearHistoryMessage 接口</li>
+          <li>删除成功会触发 onConversationDeleted 事件</li>
         </ul>
       </Card>
     </div>

@@ -269,6 +269,39 @@ const ClearHistoryMessagePage = () => {
 
       {/* 使用说明 */}
       <Card title="使用说明" style={{ marginTop: 16 }} size="small">
+        <ul style={{ margin: 0, paddingLeft: 20 }}>
+          <li>
+            <strong>功能：</strong>清空指定会话的所有历史消息
+          </li>
+          <li>
+            <strong>参数：</strong>清空选项对象 (会话ID、删除配置、同步配置等)
+          </li>
+          <li>
+            <strong>返回值：</strong>无返回值，清空成功后触发相关事件
+          </li>
+          <li>
+            <strong>用途：</strong>清除会话历史记录，支持多端同步
+          </li>
+        </ul>
+      </Card>
+
+      {/* 重要提醒 */}
+      <Card
+        title="⚠️ 重要提醒"
+        style={{
+          marginTop: 16,
+          border: '2px solid #ff9c6e',
+          backgroundColor: '#fff7e6',
+        }}
+        size="small"
+        styles={{
+          header: {
+            backgroundColor: '#ffe7ba',
+            color: '#d46b08',
+            fontWeight: 'bold',
+          },
+        }}
+      >
         <Alert
           message="危险操作警告"
           description="清空历史消息是不可逆操作，请谨慎使用！"
@@ -276,13 +309,11 @@ const ClearHistoryMessagePage = () => {
           showIcon
           style={{ marginBottom: 16 }}
         />
-        <ul style={{ margin: 0, paddingLeft: 20 }}>
+        <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
           <li>此操作会清空选定会话中的所有历史消息，操作不可逆</li>
-          <li>"删除漫游消息" 选项仅在P2P会话中有效，用于控制是否删除服务器端的漫游消息</li>
-          <li>"多端同步" 选项用于控制是否通知其他登录端同步清空操作</li>
-          <li>扩展字段会在多端同步时传递给其他端</li>
+          <li>"删除漫游消息" 选项仅在P2P会话中有效</li>
+          <li>"多端同步" 选项用于控制是否通知其他登录端</li>
           <li>清空成功会触发相关的消息监听事件</li>
-          <li>建议在清空前先确认会话和消息内容</li>
         </ul>
       </Card>
     </div>

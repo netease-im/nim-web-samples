@@ -128,111 +128,73 @@ setupUserServiceListeners();
         </Form.Item>
       </Form>
 
-      {/* 事件说明 */}
+      {/* 监听事件说明 */}
       <Card title="监听事件说明" style={{ marginTop: 16 }} size="small">
-        <div style={{ marginBottom: 16 }}>
-          <Text strong>用户资料事件：</Text>
-          <ul style={{ margin: '8px 0', paddingLeft: 20 }}>
-            <li>
-              <Text code>onUserProfileChanged</Text> - 用户资料变更通知
-              <div style={{ marginLeft: 20, color: '#666', fontSize: '12px' }}>
-                触发条件：用户昵称、头像、签名等资料发生变化时
-              </div>
-            </li>
+        <div style={{ marginBottom: 12 }}>
+          <Text strong>onUserProfileChanged</Text>
+          <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
+            <li>用户资料变更时触发</li>
+            <li>参数：users (用户列表)</li>
+            <li>触发时机：用户昵称、头像、签名等发生变化</li>
+          </ul>
+        </div>
+
+        <div style={{ marginBottom: 12 }}>
+          <Text strong>onBlockListAdded</Text>
+          <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
+            <li>用户被添加到黑名单时触发</li>
+            <li>参数：user (用户信息)</li>
+            <li>触发时机：本端或多端同步添加黑名单</li>
           </ul>
         </div>
 
         <div>
-          <Text strong>黑名单相关事件：</Text>
-          <ul style={{ margin: '8px 0', paddingLeft: 20 }}>
-            <li>
-              <Text code>onBlockListAdded</Text> - 黑名单添加通知
-              <div style={{ marginLeft: 20, color: '#666', fontSize: '12px' }}>
-                触发条件：本端直接添加黑名单，或多端同步添加黑名单
-              </div>
-            </li>
-            <li>
-              <Text code>onBlockListRemoved</Text> - 黑名单移除通知
-              <div style={{ marginLeft: 20, color: '#666', fontSize: '12px' }}>
-                触发条件：本端移除黑名单，或多端同步移除黑名单
-              </div>
-            </li>
+          <Text strong>onBlockListRemoved</Text>
+          <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
+            <li>用户被从黑名单移除时触发</li>
+            <li>参数：accountId (用户ID)</li>
+            <li>触发时机：本端或多端同步移除黑名单</li>
           </ul>
         </div>
-      </Card>
-
-      {/* 事件参数说明 */}
-      <Card title="事件参数说明" style={{ marginTop: 16 }} size="small">
-        <div style={{ marginBottom: 16 }}>
-          <Text strong>onUserProfileChanged 参数：</Text>
-          <ul style={{ margin: '8px 0', paddingLeft: 20 }}>
-            <li>
-              <Text code>users: V2NIMUser[]</Text> - 用户资料变更的用户列表
-            </li>
-            <li>
-              每个 V2NIMUser
-              对象包含：accountId（用户ID）、name（昵称）、avatar（头像）、sign（签名）等字段
-            </li>
-          </ul>
-        </div>
-
-        <div style={{ marginBottom: 16 }}>
-          <Text strong>onBlockListAdded 参数：</Text>
-          <ul style={{ margin: '8px 0', paddingLeft: 20 }}>
-            <li>
-              <Text code>user: V2NIMUser</Text> - 加入黑名单的用户信息
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <Text strong>onBlockListRemoved 参数：</Text>
-          <ul style={{ margin: '8px 0', paddingLeft: 20 }}>
-            <li>
-              <Text code>accountId: string</Text> - 移除黑名单的用户账号ID
-            </li>
-          </ul>
-        </div>
-      </Card>
-
-      {/* 测试建议 */}
-      <Card title="测试建议" style={{ marginTop: 16 }} size="small">
-        <ul style={{ margin: 0, paddingLeft: 20 }}>
-          <li>
-            <Text strong>测试用户资料变更事件：</Text>
-            <div style={{ marginLeft: 20, color: '#666' }}>
-              可以去 "更新自己的用户资料" 页面修改昵称、头像等信息来触发 onUserProfileChanged 事件
-            </div>
-          </li>
-          <li>
-            <Text strong>测试黑名单事件：</Text>
-            <div style={{ marginLeft: 20, color: '#666' }}>
-              可以去 "黑名单管理" 页面添加或移除黑名单用户来触发 onBlockListAdded 和
-              onBlockListRemoved 事件
-            </div>
-          </li>
-          <li>
-            <Text strong>多端同步测试：</Text>
-            <div style={{ marginLeft: 20, color: '#666' }}>
-              在其他设备或客户端上进行相同操作，可以测试多端同步的事件触发
-            </div>
-          </li>
-        </ul>
       </Card>
 
       {/* 使用说明 */}
       <Card title="使用说明" style={{ marginTop: 16 }} size="small">
         <ul style={{ margin: 0, paddingLeft: 20 }}>
-          <li>本页面演示 V2NIMUserService 的事件监听功能</li>
-          <li>设置监听后，相关的用户操作会触发对应事件并显示消息提示</li>
-          <li>对同一个事件 on 监听多次，都会生效并触发多次，使用时注意防止重复监听</li>
-          <li>所有事件都会在控制台输出详细信息，方便调试和学习</li>
-          <li>使用"取消所有监听"可以一次性移除所有已设置的监听器</li>
           <li>
-            <Text type="warning">
-              注意：设置监听后，可以去其他用户相关页面进行操作来触发事件（如更新用户资料、管理黑名单等）
-            </Text>
+            <strong>功能：</strong>演示 V2NIMUserService 的事件监听功能
           </li>
+          <li>
+            <strong>触发方式：</strong>去"更新用户资料"或"黑名单管理"页面进行操作
+          </li>
+          <li>
+            <strong>用途：</strong>监听用户资料变更和黑名单变化，实时更新界面状态
+          </li>
+        </ul>
+      </Card>
+
+      {/* 重要提醒 */}
+      <Card
+        title="⚠️ 重要提醒"
+        style={{
+          marginTop: 16,
+          border: '2px solid #ff9c6e',
+          backgroundColor: '#fff7e6',
+        }}
+        size="small"
+        styles={{
+          header: {
+            backgroundColor: '#ffe7ba',
+            color: '#d46b08',
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
+          <li>重复监听同一事件会导致多次触发，建议先取消监听再设置</li>
+          <li>支持多端同步，其他设备的操作也会触发事件</li>
+          <li>所有事件详情都会在控制台输出，方便调试和学习</li>
+          <li>建议在应用初始化时设置监听，在应用销毁时取消监听</li>
         </ul>
       </Card>
     </div>

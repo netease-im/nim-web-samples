@@ -162,17 +162,17 @@ const DeleteFriendPage = () => {
       <Card title="使用说明" style={{ marginTop: 16 }} size="small">
         <ul style={{ margin: 0, paddingLeft: 20 }}>
           <li>
-            <strong>好友账号ID:</strong> 要删除的好友的账号ID
+            <strong>功能：</strong>删除指定的好友关系
           </li>
           <li>
-            <strong>删除好友备注:</strong>
-            <ul style={{ marginTop: 4 }}>
-              <li>开启：删除好友的同时删除对该好友的备注信息</li>
-              <li>关闭：删除好友但保留备注信息（如果重新添加好友，备注信息会恢复）</li>
-            </ul>
+            <strong>参数：</strong>accountId (好友ID), deleteAlias (是否删除备注)
           </li>
-          <li>删除成功后，会触发相应的好友事件回调</li>
-          <li>删除好友操作是不可逆的，请谨慎操作</li>
+          <li>
+            <strong>返回值：</strong>无返回值，成功时触发好友事件回调
+          </li>
+          <li>
+            <strong>用途：</strong>解除好友关系，可选择是否保留好友备注信息
+          </li>
         </ul>
       </Card>
 
@@ -194,15 +194,10 @@ const DeleteFriendPage = () => {
         }}
       >
         <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
-          <li>
-            <strong>删除好友操作是不可逆的，请确认操作</strong>
-          </li>
-          <li>删除好友前请确保目标账号确实是你的好友</li>
-          <li>删除好友会触发相应的事件回调，请注意监听相关事件</li>
-          <li>
-            <strong>建议先通过 V2NIMFriendService.getFriendList 确认好友关系</strong>
-          </li>
-          <li>删除好友后，双方的聊天记录仍会保留</li>
+          <li>删除好友操作不可逆，请确认后再操作</li>
+          <li>删除前请确保目标账号确实是你的好友</li>
+          <li>成功删除后会触发相应的事件回调</li>
+          <li>删除后聊天记录仍会保留，只是解除好友关系</li>
         </ul>
       </Card>
     </div>

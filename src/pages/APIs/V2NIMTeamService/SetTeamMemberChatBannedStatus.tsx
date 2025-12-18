@@ -332,12 +332,6 @@ const SetTeamMemberChatBannedStatusPage = () => {
     message.success('调用语句已输出到控制台');
   };
 
-  // 群组类型选项
-  const teamTypeOptions = [
-    { label: '高级群', value: 1 },
-    { label: '超大群', value: 2 },
-  ];
-
   // 获取群组类型显示文本
   const getTeamTypeText = (teamType: number) => {
     switch (teamType) {
