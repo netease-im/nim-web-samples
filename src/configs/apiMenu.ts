@@ -104,11 +104,11 @@ export const apiMenuItems: MenuItemWithRender[] = [
       { label: '生成视频封面图链接', key: 'V2NIMStorageService-getVideoCoverUrl' },
     ],
   },
-  // {
-  //   label: '客户端反垃圾',
-  //   key: 'V2NIMClientAntispamUtil',
-  //   children: [{ label: '文本反垃圾', key: 'V2NIMClientAntispamUtil-antispamText' }],
-  // },
+  {
+    label: '客户端反垃圾',
+    key: 'V2NIMClientAntispamUtil',
+    children: [{ label: '文本反垃圾', key: 'V2NIMClientAntispamUtil-checkTextAntispam' }],
+  },
   {
     label: '用户服务',
     key: 'V2NIMUserService',
@@ -177,11 +177,12 @@ export const apiMenuItems: MenuItemWithRender[] = [
       { label: '设置监听事件', key: 'V2NIMSettingService-on' },
     ],
   },
-  // {
-  //   label: 'AI 机器人',
-  //   key: 'V2NIMAIService',
-  //   children: [{ label: 'AI 代理会话', key: 'V2NIMAIService-proxyAIModelCall' }],
-  // },
+  {
+    label: 'AI 数字人',
+    key: 'V2NIMAIService',
+    children: [{ label: 'AI 数字人请求代理', key: 'V2NIMAIService-proxyAIModelCall' }],
+  },
+  // 有关于信令, 可直接参见呼叫组件的演示 https://doc.yunxin.163.com/nertccallkit/guide?platform=web
   // {
   //   label: 'signalling 信令',
   //   key: 'V2NIMSignallingService',

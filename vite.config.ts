@@ -1,20 +1,26 @@
-import mdx from '@mdx-js/rollup';
 import react from '@vitejs/plugin-react';
 
+import fs from 'fs';
 import path from 'path';
-import rehypeHighlight from 'rehype-highlight';
-import remarkGfm from 'remark-gfm';
 import { defineConfig } from 'vite';
+
+// 读取 node_modules 中 nim-web-sdk-ng 的真实版本
+const nimSdkPackageJsonPath = path.resolve('./node_modules/nim-web-sdk-ng/package.json');
+let nimSdkVersion = 'unknown';
+try {
+  const nimSdkPackageJson = JSON.parse(fs.readFileSync(nimSdkPackageJsonPath, 'utf-8'));
+  nimSdkVersion = nimSdkPackageJson.version || 'unknown';
+} catch (error) {
+  console.warn('无法读取 nim-web-sdk-ng 版本:', error);
+}
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    mdx({
-      remarkPlugins: [remarkGfm],
-      rehypePlugins: [rehypeHighlight],
-    }),
-  ],
+  base: '/public-resources/web-sample-code-for-im/',
+  define: {
+    __NIM_SDK_VERSION__: JSON.stringify(nimSdkVersion),
+  },
+  plugins: [react()],
   resolve: {
     alias: {
       '@': path.resolve(path.dirname(''), './src'),

@@ -1,12 +1,12 @@
 import { Button, Card, Form, Input, InputNumber, Space, Typography, message } from 'antd';
-import { V2NIMGetMediaResourceInfoResult } from 'nim-web-sdk-ng/dist/v2/NIM_BROWSER_SDK/V2NIMStorageService';
+import { V2NIMGetMediaResourceInfoResult } from 'nim-web-sdk-ng/dist/v2/CHATROOM_BROWSER_SDK/V2NIMStorageService';
 import React, { useState } from 'react';
 
 import { to } from '@/utils/errorHandle';
 
 const { Text } = Typography;
 
-const STORAGE_KEY = 'nim_V2NIMStorageService_getImageThumbUrl_params';
+const STORAGE_KEY = 'chatroomV2_V2NIMStorageService_getImageThumbUrl_params';
 
 interface FormValues {
   attachment: string;
@@ -68,8 +68,8 @@ const GetImageThumbUrlPage: React.FC = () => {
   const [result, setResult] = useState<V2NIMGetMediaResourceInfoResult | null>(null);
 
   const onFinish = async (values: FormValues) => {
-    if (!(window.nim && window.nim.V2NIMLoginService.getLoginUser())) {
-      message.error('NIM SDK 尚未初始化和登录');
+    if (!(window.chatroomV2 && window.chatroomV2.getChatroomInfo())) {
+      message.error('尚未初始化或登录');
       return;
     }
     setLoading(true);
@@ -104,8 +104,8 @@ const GetImageThumbUrlPage: React.FC = () => {
     // 调用生成缩略图链接API
     const [error, apiResult] = await to(() =>
       thumbSizeObj
-        ? window.nim?.V2NIMStorageService.getImageThumbUrl(attachmentObj, thumbSizeObj)
-        : window.nim?.V2NIMStorageService.getImageThumbUrl(attachmentObj, {
+        ? window.chatroomV2?.V2NIMStorageService.getImageThumbUrl(attachmentObj, thumbSizeObj)
+        : window.chatroomV2?.V2NIMStorageService.getImageThumbUrl(attachmentObj, {
             width: 100,
             height: 100,
           })
@@ -143,9 +143,9 @@ const GetImageThumbUrlPage: React.FC = () => {
           width: values.width,
           height: values.height,
         };
-        statement = `const thumbUrl = await window.nim.V2NIMStorageService.getImageThumbUrl(${JSON.stringify(attachmentObj, null, 2)}, ${JSON.stringify(thumbSizeObj, null, 2)});`;
+        statement = `const thumbUrl = await window.chatroomV2.V2NIMStorageService.getImageThumbUrl(${JSON.stringify(attachmentObj, null, 2)}, ${JSON.stringify(thumbSizeObj, null, 2)});`;
       } else {
-        statement = `const thumbUrl = await window.nim.V2NIMStorageService.getImageThumbUrl(${JSON.stringify(attachmentObj, null, 2)});`;
+        statement = `const thumbUrl = await window.chatroomV2.V2NIMStorageService.getImageThumbUrl(${JSON.stringify(attachmentObj, null, 2)});`;
       }
 
       console.log('V2NIMStorageService.getImageThumbUrl 调用语句:');

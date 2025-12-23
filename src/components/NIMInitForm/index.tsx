@@ -1,4 +1,6 @@
-import { Button, Form, Input, Select, Switch, message } from 'antd';
+import { EventTracking } from '@xkit-yx/utils';
+
+import { Button, Form, Input, Modal, Select, Switch, message } from 'antd';
 import NIM from 'nim-web-sdk-ng';
 import { NIMOtherOptions } from 'nim-web-sdk-ng/dist/v2/NIM_BROWSER_SDK/NIMInterface';
 import { useState } from 'react';
@@ -22,6 +24,9 @@ interface InitFormValues {
   enableLogger: boolean;
   enableCloudStorage: boolean;
   enableCloudConversation: boolean;
+  enableClientAntispam: boolean;
+  enableServerV2FriendAddApplication: boolean;
+  enableServerV2TeamJoinActionInfo: boolean;
 }
 
 const defaultInstanceParam1 = {
@@ -37,23 +42,32 @@ const defaultInstanceParam2 = {
   },
   reporterConfig: {
     enableCompass: true,
-    compassDataEndpoint: 'https://statistic.live.126.net',
+    // compassDataEndpoint: 'https://statistic.live.126.net',
     isDataReportEnable: true,
   },
   abtestConfig: {
     isAbtestEnable: true,
-    abtestUrl: 'https://abt-online.netease.im/v1/api/abt/client/getExperimentInfo',
+    // abtestUrl: 'https://abt-online.netease.im/v1/api/abt/client/getExperimentInfo',
   },
   loggerConfig: {
     storageEnable: true,
     storageName: 'nim-logs',
   },
   cloudStorageConfig: {
-    commonUploadHost: 'https://fileup.chatnos.com',
-    commonUploadHostBackupList: ['https://oss.chatnos.com'],
-    chunkUploadHost: 'https://wannos-web.127.net',
-    chunkUploadHostBackupList: ['https://fileup.chatnos.com', 'https://oss.chatnos.com'],
+    // commonUploadHost: 'https://fileup.chatnos.com',
+    // commonUploadHostBackupList: ['https://oss.chatnos.com'],
+    // chunkUploadHost: 'https://wannos-web.127.net',
+    // chunkUploadHostBackupList: ['https://fileup.chatnos.com', 'https://oss.chatnos.com'],
     isNeedToGetUploadPolicyFromServer: true,
+  },
+  V2NIMClientAntispamUtilConfig: {
+    enable: true,
+  },
+  V2NIMFriendServiceConfig: {
+    enableServerV2FriendAddApplication: true,
+  },
+  V2NIMTeamServiceConfig: {
+    enableServerV2TeamJoinActionInfo: true,
   },
 };
 
@@ -68,6 +82,9 @@ const getDefaultFormValues = (): InitFormValues => ({
   enableLogger: true,
   enableCloudStorage: true,
   enableCloudConversation: false,
+  enableClientAntispam: false,
+  enableServerV2FriendAddApplication: false,
+  enableServerV2TeamJoinActionInfo: false,
 });
 
 const NIMInitForm = ({ onInitComplete }: NIMInitFormProps) => {
@@ -115,6 +132,18 @@ const NIMInitForm = ({ onInitComplete }: NIMInitFormProps) => {
       // @ts-ignore
       param2.cloudStorageConfig = defaultInstanceParam2.cloudStorageConfig;
     }
+
+    if (values.enableClientAntispam) {
+      param2.V2NIMClientAntispamUtilConfig = defaultInstanceParam2.V2NIMClientAntispamUtilConfig;
+    }
+
+    if (values.enableServerV2FriendAddApplication) {
+      param2.V2NIMFriendServiceConfig = defaultInstanceParam2.V2NIMFriendServiceConfig;
+    }
+    if (values.enableServerV2TeamJoinActionInfo) {
+      // @ts-ignore
+      param2.V2NIMTeamServiceConfig = defaultInstanceParam2.V2NIMTeamServiceConfig;
+    }
     return param2;
   };
 
@@ -142,6 +171,11 @@ const NIMInitForm = ({ onInitComplete }: NIMInitFormProps) => {
           enableLogger: !!param2.loggerConfig,
           enableCloudStorage: !!param2.cloudStorageConfig,
           enableCloudConversation: !!param1.enableV2CloudConversation,
+          enableClientAntispam: !!param2.V2NIMClientAntispamUtilConfig,
+          enableServerV2TeamJoinActionInfo:
+            !!param2.V2NIMTeamServiceConfig?.enableServerV2TeamJoinActionInfo,
+          enableServerV2FriendAddApplication:
+            !!param2.V2NIMFriendServiceConfig?.enableServerV2FriendAddApplication,
         };
       }
     } catch (error) {
@@ -281,20 +315,41 @@ const NIMInitForm = ({ onInitComplete }: NIMInitFormProps) => {
         window.nim = nim;
       }
 
-      message.success('NIM SDK初始化成功');
+      doReport(values.appkey);
+
       // 保存到localStorage
       localStorage.setItem('V2NIM-getInstance-param1', JSON.stringify(instanceParam1));
       localStorage.setItem('V2NIM-getInstance-param2', JSON.stringify(instanceParam2));
 
-      if (onInitComplete) {
-        onInitComplete();
-      }
+      // 使用确认框提示用户
+      Modal.success({
+        title: 'NIM SDK 初始化成功',
+        content: '下一步在「登录服务」-「登录与登出」页面进行登录',
+        okText: '确认',
+        onOk: () => {
+          if (onInitComplete) {
+            onInitComplete();
+          }
+        },
+      });
     } catch (error) {
       console.error('初始化失败:', error);
       message.error('NIM SDK初始化失败');
     } finally {
       setLoading(false);
     }
+  };
+
+  // 做个数据上报统计
+  // 开发者自行编写代码时并不需要这个
+  const doReport = (appkey: string) => {
+    const eventTracking = new EventTracking({
+      appKey: appkey,
+      component: 'WebSampleCodeForIM',
+      imVersion: __NIM_SDK_VERSION__,
+      platform: 'WEB',
+    } as any);
+    eventTracking.track('init', '');
   };
 
   const handleReset = () => {
@@ -374,6 +429,7 @@ const NIMInitForm = ({ onInitComplete }: NIMInitFormProps) => {
       <Form.Item
         name="enableAbtest"
         label="A/B测试"
+        tooltip="实验性质能力开关"
         valuePropName="checked"
         className={styles.switchItem}
       >
@@ -383,6 +439,7 @@ const NIMInitForm = ({ onInitComplete }: NIMInitFormProps) => {
       <Form.Item
         name="enableLogger"
         label="日志持久化"
+        tooltip="持久存储在浏览器的 indexedDB 中"
         valuePropName="checked"
         className={styles.switchItem}
       >
@@ -391,7 +448,8 @@ const NIMInitForm = ({ onInitComplete }: NIMInitFormProps) => {
 
       <Form.Item
         name="enableCloudStorage"
-        label="云存储"
+        label="融合存储"
+        tooltip="关闭开关时固定使用 NOS 存储服务, 打开开关可以调配存储服务和链接"
         valuePropName="checked"
         className={styles.switchItem}
       >
@@ -401,6 +459,37 @@ const NIMInitForm = ({ onInitComplete }: NIMInitFormProps) => {
       <Form.Item
         name="enableCloudConversation"
         label="云端会话"
+        tooltip="打开此开关才可以使用以下模块 V2NIMConversationService, V2NIMConversationGroupService"
+        valuePropName="checked"
+        className={styles.switchItem}
+      >
+        <Switch />
+      </Form.Item>
+
+      <Form.Item
+        name="enableClientAntispam"
+        label="客户端反垃圾"
+        tooltip="需要在 IM 控制台配置反垃圾词库才能正常使用"
+        valuePropName="checked"
+        className={styles.switchItem}
+      >
+        <Switch />
+      </Form.Item>
+
+      <Form.Item
+        name="enableServerV2FriendAddApplication"
+        label="服务端好友申请记录"
+        tooltip="是否开启服务端好友申请记录功能"
+        valuePropName="checked"
+        className={styles.switchItem}
+      >
+        <Switch />
+      </Form.Item>
+
+      <Form.Item
+        name="enableServerV2TeamJoinActionInfo"
+        label="服务端群申请记录"
+        tooltip="是否开启服务端群申请记录功能"
         valuePropName="checked"
         className={styles.switchItem}
       >

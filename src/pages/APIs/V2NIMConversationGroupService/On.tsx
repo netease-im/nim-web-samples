@@ -1,4 +1,5 @@
 import { Button, Card, Form, Space, Typography, message } from 'antd';
+import { V2NIMConversation } from 'nim-web-sdk-ng/dist/v2/NIM_BROWSER_SDK/V2NIMConversationService';
 
 import styles from '../nim.module.less';
 
@@ -35,19 +36,19 @@ const OnPage = () => {
   };
 
   // 会话被添加到分组
-  const onConversationsAddedToGroup = (groupId: string, conversationId: string) => {
+  const onConversationsAddedToGroup = (groupId: string, list: V2NIMConversation[]) => {
     message.info(
       `收到 V2NIMConversationGroupService 模块的 onConversationsAddedToGroup 事件, 详情见控制台`
     );
-    console.log('会话被添加到分组:', { groupId, conversationId });
+    console.log('会话被添加到分组:', { groupId, list });
   };
 
   // 会话从分组中移除
-  const onConversationsRemovedFromGroup = (groupId: string, conversationId: string) => {
+  const onConversationsRemovedFromGroup = (groupId: string, ids: string[]) => {
     message.info(
       `收到 V2NIMConversationGroupService 模块的 onConversationsRemovedFromGroup 事件, 详情见控制台`
     );
-    console.log('会话从分组中移除:', { groupId, conversationId });
+    console.log('会话从分组中移除:', { groupId, ids });
   };
 
   // 设置事件监听

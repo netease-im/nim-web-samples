@@ -15,20 +15,21 @@ import {
   message,
 } from 'antd';
 import {
+  type V2NIMFileMetaInfo,
   type V2NIMStorageScene,
   type V2NIMUploadFileTask,
-} from 'nim-web-sdk-ng/dist/v2/NIM_BROWSER_SDK/V2NIMStorageService';
+} from 'nim-web-sdk-ng/dist/v2/CHATROOM_BROWSER_SDK/V2NIMStorageService';
 import { useEffect, useState } from 'react';
 
 import { to } from '@/utils/errorHandle';
 
-import styles from '../nim.module.less';
+import styles from '../chatroom.module.less';
 
 const { Text } = Typography;
 const { Option } = Select;
 const { Step } = Steps;
 
-const STORAGE_KEY = 'nim_V2NIMStorageService_uploadFile_params';
+const STORAGE_KEY = 'chatroomV2_V2NIMStorageService_uploadFileWithMetaInfo_params';
 
 interface FormValues {
   file: UploadFile[];
@@ -36,13 +37,13 @@ interface FormValues {
   sceneName: string;
 }
 
-const UploadFilePage = () => {
+const UploadFileWithMetaInfoPage = () => {
   const [form] = Form.useForm<FormValues>();
   const [createTaskLoading, setCreateTaskLoading] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
   const [uploadTask, setUploadTask] = useState<V2NIMUploadFileTask | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [uploadResult, setUploadResult] = useState<string>('');
+  const [uploadResult, setUploadResult] = useState<V2NIMFileMetaInfo | null>(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [sceneList, setSceneList] = useState<V2NIMStorageScene[]>([]);
   const [sceneListLoading, setSceneListLoading] = useState(false);
@@ -69,14 +70,16 @@ const UploadFilePage = () => {
 
   // 获取场景列表
   const fetchSceneList = async () => {
-    if (!(window.nim && window.nim.V2NIMLoginService.getLoginUser())) {
-      message.error('NIM SDK 尚未初始化和登录');
+    if (!window.chatroomV2) {
+      message.warning('聊天室 SDK 尚未初始化');
       return;
     }
 
     setSceneListLoading(true);
 
-    const [error, result] = await to(() => window.nim?.V2NIMStorageService.getStorageSceneList());
+    const [error, result] = await to(() =>
+      window.chatroomV2?.V2NIMStorageService.getStorageSceneList()
+    );
 
     setSceneListLoading(false);
 
@@ -113,16 +116,7 @@ const UploadFilePage = () => {
   // 文件选择变化处理
   const handleFileChange = (info: any) => {
     const { fileList } = info;
-
-    // 只保留必要的文件信息，避免循环引用警告
-    const cleanFileList = fileList.map((file: UploadFile) => ({
-      uid: file.uid,
-      name: file.name,
-      status: file.status,
-      originFileObj: file.originFileObj,
-    }));
-
-    form.setFieldValue('file', cleanFileList);
+    form.setFieldValue('file', fileList);
 
     // 如果选择了文件且未设置文件名，自动设置文件名
     if (fileList.length > 0) {
@@ -131,19 +125,19 @@ const UploadFilePage = () => {
 
     // 重置状态
     setUploadTask(null);
-    setUploadResult('');
+    setUploadResult(null);
     setUploadProgress(0);
     setCurrentStep(0);
   };
 
   // 第一步：创建上传任务
   const createUploadTask = async (values: FormValues) => {
-    if (!window.nim) {
-      message.error('NIM SDK 尚未初始化');
+    if (!window.chatroomV2) {
+      message.error('聊天室 SDK 尚未初始化');
       return null;
     }
 
-    if (!window.nim.V2NIMLoginService.getLoginUser()) {
+    if (!window.chatroomV2.getChatroomInfo()) {
       message.error('用户尚未登录');
       return null;
     }
@@ -172,7 +166,7 @@ const UploadFilePage = () => {
 
     // 调用创建上传任务API
     const [error, result] = await to(() =>
-      window.nim?.V2NIMStorageService.createUploadFileTask({
+      window.chatroomV2?.V2NIMStorageService.createUploadFileTask({
         fileObj: params.file,
         sceneName: params.sceneName,
       })
@@ -203,10 +197,10 @@ const UploadFilePage = () => {
     }
   };
 
-  // 第二步：上传文件
-  const uploadFile = async (task: any) => {
-    if (!window.nim) {
-      message.error('NIM SDK 尚未初始化');
+  // 第二步：上传文件带元信息
+  const uploadFileWithMetaInfo = async (task: any, metaInfo?: any) => {
+    if (!window.chatroomV2) {
+      message.error('聊天室 SDK 尚未初始化');
       return;
     }
 
@@ -218,7 +212,12 @@ const UploadFilePage = () => {
     setUploadLoading(true);
     setUploadProgress(0);
 
-    console.log('API V2NIMStorageService.uploadFile execute with task:', task);
+    console.log(
+      'API V2NIMStorageService.uploadFileWithMetaInfo execute with task:',
+      task,
+      'metaInfo:',
+      metaInfo
+    );
 
     // 创建进度回调函数
     const onProgress = (progress: number) => {
@@ -226,9 +225,9 @@ const UploadFilePage = () => {
       console.log('上传进度:', progress + '%');
     };
 
-    // 调用上传文件API
+    // 调用上传文件API (带元信息)
     const [error, result] = await to(() =>
-      window.nim?.V2NIMStorageService.uploadFile(task, onProgress)
+      window.chatroomV2?.V2NIMStorageService.uploadFileWithMetaInfo(task, onProgress)
     );
 
     setUploadLoading(false);
@@ -251,8 +250,8 @@ const UploadFilePage = () => {
 
   // 取消上传文件
   const cancelUploadFile = async () => {
-    if (!window.nim) {
-      message.error('NIM SDK 尚未初始化');
+    if (!window.chatroomV2) {
+      message.error('聊天室 SDK 尚未初始化');
       return;
     }
 
@@ -265,7 +264,7 @@ const UploadFilePage = () => {
 
     // 调用取消上传API
     const [error, result] = await to(() =>
-      window.nim?.V2NIMStorageService.cancelUploadFile(uploadTask)
+      window.chatroomV2?.V2NIMStorageService.cancelUploadFile(uploadTask)
     );
 
     if (error) {
@@ -285,19 +284,23 @@ const UploadFilePage = () => {
 
   // 完整流程：创建任务并上传
   const onFinish = async (values: FormValues) => {
+    if (!(window.chatroomV2 && window.chatroomV2.getChatroomInfo())) {
+      message.error('尚未初始化或登录');
+      return;
+    }
     // 第一步：创建上传任务
     const task = await createUploadTask(values);
 
     if (task) {
       // 第二步：上传文件
-      await uploadFile(task);
+      await uploadFileWithMetaInfo(task);
     }
   };
 
   // 仅上传文件（当已有任务时）
   const handleUploadOnly = () => {
     if (uploadTask) {
-      uploadFile(uploadTask);
+      uploadFileWithMetaInfo(uploadTask);
     } else {
       message.error('请先创建上传任务');
     }
@@ -312,18 +315,18 @@ const UploadFilePage = () => {
       return;
     }
 
-    const createTaskStatement = `const uploadTask = await window.nim.V2NIMStorageService.createUploadFileTask({
+    const createTaskStatement = `const uploadTask = await window.chatroomV2.V2NIMStorageService.createUploadFileTask({
   fileObj: file,
   sceneName: "${values.sceneName}"
 });`;
 
-    const uploadStatement = `const result = await window.nim.V2NIMStorageService.uploadFile(uploadTask, (progress) => {
+    const uploadStatement = `const result = await window.chatroomV2.V2NIMStorageService.uploadFileWithMetaInfo(uploadTask, (progress) => {
   console.log('进度:', progress + '%');
 });`;
 
     const fullCode = `// 第一步：创建上传任务\n${createTaskStatement}\n\n// 第二步：上传文件\n${uploadStatement}`;
 
-    console.log('V2NIMStorageService.uploadFile 完整调用语句:');
+    console.log('V2NIMStorageService.uploadFileWithMetaInfo 完整调用语句:');
     console.log(fullCode);
     message.success('调用语句已输出到控制台');
   };
@@ -331,7 +334,7 @@ const UploadFilePage = () => {
   // 重置所有状态
   const handleReset = () => {
     setUploadTask(null);
-    setUploadResult('');
+    setUploadResult(null);
     setUploadProgress(0);
     setCurrentStep(0);
     form.setFieldValue('file', []);
@@ -363,7 +366,7 @@ const UploadFilePage = () => {
               href={`https://doc.yunxin.163.com/messaging2/references/web/typedoc/Latest/zh/v2/nim/index.html#V2NIMStorageService`}
               target="_blank"
             >
-              V2NIMStorageService.uploadFile
+              V2NIMStorageService.uploadFileWithMetaInfo
             </a>
           </p>
         </Form.Item>
@@ -484,11 +487,39 @@ const UploadFilePage = () => {
           <div style={{ marginBottom: 8 }}>
             <Text strong>文件URL: </Text>
             <Text code style={{ wordBreak: 'break-all' }}>
-              {uploadResult || '无'}
+              {uploadResult.url || '无'}
             </Text>
           </div>
+          <div style={{ marginBottom: 8 }}>
+            <Text strong>文件名: </Text>
+            <Text>{uploadResult.name || '未知'}</Text>
+          </div>
+          <div style={{ marginBottom: 8 }}>
+            <Text strong>文件大小: </Text>
+            <Text>{uploadResult.size || '未知'} 字节</Text>
+          </div>
+          {uploadResult.ext && (
+            <div style={{ marginBottom: 8 }}>
+              <Text strong>文件扩展名: </Text>
+              <Text>{uploadResult.ext}</Text>
+            </div>
+          )}
+          {(uploadResult.width || uploadResult.height) && (
+            <div style={{ marginBottom: 8 }}>
+              <Text strong>尺寸: </Text>
+              <Text>
+                {uploadResult.width || '?'} x {uploadResult.height || '?'}
+              </Text>
+            </div>
+          )}
+          {uploadResult.duration && (
+            <div style={{ marginBottom: 8 }}>
+              <Text strong>时长: </Text>
+              <Text>{uploadResult.duration} 毫秒</Text>
+            </div>
+          )}
           <div>
-            <Text strong>完整信息: </Text>
+            <Text strong>完整元信息: </Text>
             <pre
               style={{
                 background: '#f5f5f5',
@@ -512,14 +543,13 @@ const UploadFilePage = () => {
             <strong>功能：</strong>执行文件上传操作
           </li>
           <li>
-            <strong>参数：</strong>uploadTask (上传任务对象来自 createUploadFileTask API),
-            onProgress (进度回调函数)
+            <strong>参数：</strong>uploadTask (上传任务对象), onProgress (进度回调函数)
           </li>
           <li>
             <strong>返回值：</strong>Promise&lt;UploadResult&gt; (上传结果对象)
           </li>
           <li>
-            <strong>用途：</strong>将文件实际上传到云信存储服务
+            <strong>用途：</strong>将文件上传到云信存储服务
           </li>
         </ul>
       </Card>
@@ -548,7 +578,7 @@ const UploadFilePage = () => {
             即可
           </li>
           <li>上传过程中会显示实时进度</li>
-          <li>支持上传进度回调监听</li>
+          <li>单个文件大小限制为 100MB</li>
           <li>网络异常时, 同一实例里重试上传, 会保留任务信息进行断点续传</li>
         </ul>
       </Card>
@@ -556,4 +586,4 @@ const UploadFilePage = () => {
   );
 };
 
-export default UploadFilePage;
+export default UploadFileWithMetaInfoPage;

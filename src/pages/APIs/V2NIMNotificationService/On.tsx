@@ -1,18 +1,9 @@
 import { Button, Card, Form, Space, Typography, message } from 'antd';
+import { V2NIMCustomNotification } from 'nim-web-sdk-ng/dist/v2/NIM_BROWSER_SDK/V2NIMNotificationService';
 
 import styles from '../nim.module.less';
 
 const { Text } = Typography;
-
-// 自定义通知和广播通知的类型定义（基于知识库信息）
-interface V2NIMCustomNotification {
-  conversationId: string;
-  senderId: string;
-  receiverId: string;
-  content: string;
-  timestamp: number;
-  [key: string]: any;
-}
 
 interface V2NIMBroadcastNotification {
   id: string;
