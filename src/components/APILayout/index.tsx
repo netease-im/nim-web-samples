@@ -2,7 +2,7 @@ import { Layout, Menu, Typography } from 'antd';
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { apiMenuItems } from '../../configs/apiMenu';
+import { MenuItemWithRender, apiMenuItems } from '../../configs/apiMenu';
 
 const { Sider, Content } = Layout;
 const { Title } = Typography;
@@ -16,23 +16,34 @@ interface MenuItem {
 
 interface APILayoutProps {
   children: ReactNode | ((selectedKey: string) => ReactNode);
+  /** 菜单配置项，默认使用 apiMenuItems */
+  menuItems?: MenuItemWithRender[];
+  /** 路由基础路径，默认 '/apis' */
+  baseRoute?: string;
+  /** 默认选中的 key，默认 'NIMInit' */
+  defaultKey?: string;
 }
 
-// 所有菜单项目
-const menuItems = apiMenuItems;
-
-const APILayout = ({ children }: APILayoutProps) => {
+const APILayout = ({
+  children,
+  menuItems = apiMenuItems,
+  baseRoute = '/apis',
+  defaultKey = 'NIMInit',
+}: APILayoutProps) => {
   const navigate = useNavigate();
   const location = useLocation();
 
   // 使用 useMemo 缓存路径解析结果
   const { service, method } = useMemo(() => {
-    const match = location.pathname.match(/^\/apis\/([^/]+)\/([^/]+)$/);
+    // 动态生成正则表达式以匹配不同的 baseRoute
+    const escapedBaseRoute = baseRoute.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`^${escapedBaseRoute}/([^/]+)/([^/]+)$`);
+    const match = location.pathname.match(regex);
     if (match) {
       return { service: match[1], method: match[2] };
     }
     return { service: null, method: null };
-  }, [location.pathname]);
+  }, [location.pathname, baseRoute]);
 
   // 使用 useMemo 缓存菜单项处理结果
   const { cleanedMenuItems, findParentKeysFn } = useMemo(() => {
@@ -76,14 +87,14 @@ const APILayout = ({ children }: APILayoutProps) => {
       cleanedMenuItems: cleanMenuItems(menuItems),
       findParentKeysFn: findParentKeys,
     };
-  }, []); // 菜单项是静态的，不需要依赖
+  }, [menuItems]);
 
   // 二级菜单选择 key
   const [selectedKey, setSelectedKey] = useState(() => {
     if (service && method) {
       return `${service}-${method}`;
     }
-    return 'NIMInit';
+    return defaultKey;
   });
 
   // 一级菜单打开 key
@@ -102,25 +113,25 @@ const APILayout = ({ children }: APILayoutProps) => {
       setSelectedKey(currentKey);
       setOpenKeys(findParentKeysFn(menuItems, currentKey));
     } else {
-      setSelectedKey('NIMInit');
+      setSelectedKey(defaultKey);
       setOpenKeys([]);
     }
-  }, [service, method, findParentKeysFn]);
+  }, [service, method, findParentKeysFn, defaultKey]);
 
   const handleMenuClick = useCallback(
     ({ key }: { key: string }) => {
-      if (key === 'NIMInit') {
-        navigate('/apis');
+      if (key === defaultKey) {
+        navigate(baseRoute);
         return;
       }
 
       // 解析 key 获取 service 和 method
       const [serviceKey, methodKey] = key.split('-');
       if (methodKey) {
-        navigate(`/apis/${serviceKey}/${methodKey}`);
+        navigate(`${baseRoute}/${serviceKey}/${methodKey}`);
       }
     },
-    [navigate]
+    [navigate, baseRoute, defaultKey]
   );
 
   const handleOpenChange = useCallback((keys: string[]) => {
@@ -158,7 +169,7 @@ const APILayout = ({ children }: APILayoutProps) => {
     };
 
     return findLabel(menuItems, selectedKey);
-  }, [selectedKey]);
+  }, [menuItems, selectedKey]);
 
   return (
     <Layout>

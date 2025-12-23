@@ -1,6 +1,5 @@
 import '@ant-design/v5-patch-for-react-19';
 
-import 'highlight.js/styles/github.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 

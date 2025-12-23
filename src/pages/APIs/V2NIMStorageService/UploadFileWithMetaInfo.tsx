@@ -70,8 +70,8 @@ const UploadFileWithMetaInfoPage = () => {
 
   // 获取场景列表
   const fetchSceneList = async () => {
-    if (!window.nim) {
-      message.warning('NIM SDK 尚未初始化');
+    if (!(window.nim && window.nim.V2NIMLoginService.getLoginUser())) {
+      message.error('NIM SDK 尚未初始化和登录');
       return;
     }
 

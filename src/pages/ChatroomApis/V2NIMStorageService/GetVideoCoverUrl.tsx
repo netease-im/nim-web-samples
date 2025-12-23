@@ -1,5 +1,5 @@
 import { Button, Card, Checkbox, Form, Input, InputNumber, Typography, message } from 'antd';
-import { V2NIMGetMediaResourceInfoResult } from 'nim-web-sdk-ng/dist/v2/NIM_BROWSER_SDK/V2NIMStorageService';
+import { V2NIMGetMediaResourceInfoResult } from 'nim-web-sdk-ng/dist/v2/CHATROOM_BROWSER_SDK/V2NIMStorageService';
 import React, { useState } from 'react';
 
 import { to } from '@/utils/errorHandle';
@@ -7,7 +7,7 @@ import { to } from '@/utils/errorHandle';
 const { TextArea } = Input;
 const { Text } = Typography;
 
-const STORAGE_KEY = 'nim_V2NIMStorageService_getVideoCoverUrl_params';
+const STORAGE_KEY = 'chatroomV2_V2NIMStorageService_getVideoCoverUrl_params';
 
 interface FormValues {
   attachment: string;
@@ -39,10 +39,11 @@ const GetVideoCoverUrl: React.FC = () => {
   const [useThumbSize, setUseThumbSize] = useState(false);
 
   const onFinish = async (values: FormValues) => {
-    if (!(window.nim && window.nim.V2NIMLoginService.getLoginUser())) {
-      message.error('NIM SDK 尚未初始化和登录');
+    if (!(window.chatroomV2 && window.chatroomV2.getChatroomInfo())) {
+      message.error('尚未初始化或登录');
       return;
     }
+
     setLoading(true);
     setResult(null);
 
@@ -75,7 +76,7 @@ const GetVideoCoverUrl: React.FC = () => {
     );
 
     const [error, apiResult] = await to(() =>
-      window.nim?.V2NIMStorageService.getVideoCoverUrl(attachment, thumbSize)
+      window.chatroomV2?.V2NIMStorageService.getVideoCoverUrl(attachment, thumbSize)
     );
 
     if (error) {

@@ -3,6 +3,8 @@ import { Navigate, Outlet, Route } from 'react-router-dom';
 import APILayout from '@/components/APILayout';
 import NIMInitForm from '@/components/NIMInitForm';
 
+import V2NIMAIServiceProxyAIModelCall from './V2NIMAIService/ProxyAIModelCall';
+import V2NIMClientAntispamUtilCheckTextAntispam from './V2NIMClientAntispamUtil/CheckTextAntispam';
 import V2NIMConversationGroupServiceAddConversationsToGroup from './V2NIMConversationGroupService/AddConversationsToGroup';
 import V2NIMConversationGroupServiceCreateConversationGroup from './V2NIMConversationGroupService/CreateConversationGroup';
 import V2NIMConversationGroupServiceDeleteConversationGroup from './V2NIMConversationGroupService/DeleteConversationGroup';
@@ -99,6 +101,11 @@ export const apiRoutes = [
   // 使用嵌套路由，APILayout 只创建一次
   <Route path="/apis" element={<APILayoutWrapper />}>
     <Route index element={<NIMInitForm />} />,
+    <Route path="V2NIMAIService/proxyAIModelCall" element={<V2NIMAIServiceProxyAIModelCall />} />
+    <Route
+      path="V2NIMClientAntispamUtil/checkTextAntispam"
+      element={<V2NIMClientAntispamUtilCheckTextAntispam />}
+    />
     <Route path="V2NIMLoginService/login" element={<V2NIMLoginServiceLogin />} />,
     <Route path="V2NIMLoginService/kickOffline" element={<V2NIMLoginServiceKickOffline />} />,
     <Route path="V2NIMLoginService/on" element={<V2NIMLoginServiceOn />} />,

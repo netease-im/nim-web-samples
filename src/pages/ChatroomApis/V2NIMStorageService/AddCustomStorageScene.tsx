@@ -1,12 +1,12 @@
 import { Button, Card, Form, Input, InputNumber, Typography, message } from 'antd';
-import { V2NIMStorageScene } from 'nim-web-sdk-ng/dist/v2/NIM_BROWSER_SDK/V2NIMStorageService';
+import { V2NIMStorageScene } from 'nim-web-sdk-ng/dist/v2/CHATROOM_BROWSER_SDK/V2NIMStorageService';
 import React, { useState } from 'react';
 
 import { to } from '@/utils/errorHandle';
 
 const { Text } = Typography;
 
-const STORAGE_KEY = 'nim_V2NIMStorageService_addCustomStorageScene_params';
+const STORAGE_KEY = 'chatroomV2_V2NIMStorageService_addCustomStorageScene_params';
 
 interface FormValues {
   sceneName: string;
@@ -29,8 +29,8 @@ const AddCustomStorageScene: React.FC = () => {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const onFinish = async (values: FormValues) => {
-    if (!(window.nim && window.nim.V2NIMLoginService.getLoginUser())) {
-      message.error('NIM SDK 尚未初始化和登录');
+    if (!(window.chatroomV2 && window.chatroomV2.getChatroomInfo())) {
+      message.error('尚未初始化或登录');
       return;
     }
     setLoading(true);
@@ -38,7 +38,10 @@ const AddCustomStorageScene: React.FC = () => {
     setIsSuccess(false);
 
     const [error, result] = await to(() =>
-      window.nim?.V2NIMStorageService.addCustomStorageScene(values.sceneName, values.expireTime)
+      window.chatroomV2?.V2NIMStorageService.addCustomStorageScene(
+        values.sceneName,
+        values.expireTime
+      )
     );
 
     if (error) {

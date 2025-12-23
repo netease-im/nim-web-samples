@@ -17,18 +17,18 @@ import {
 import {
   type V2NIMStorageScene,
   type V2NIMUploadFileTask,
-} from 'nim-web-sdk-ng/dist/v2/NIM_BROWSER_SDK/V2NIMStorageService';
+} from 'nim-web-sdk-ng/dist/v2/CHATROOM_BROWSER_SDK/V2NIMStorageService';
 import { useEffect, useState } from 'react';
 
 import { to } from '@/utils/errorHandle';
 
-import styles from '../nim.module.less';
+import styles from '../chatroom.module.less';
 
 const { Text } = Typography;
 const { Option } = Select;
 const { Step } = Steps;
 
-const STORAGE_KEY = 'nim_V2NIMStorageService_uploadFile_params';
+const STORAGE_KEY = 'chatroomV2_V2NIMStorageService_uploadFile_params';
 
 interface FormValues {
   file: UploadFile[];
@@ -69,14 +69,16 @@ const UploadFilePage = () => {
 
   // 获取场景列表
   const fetchSceneList = async () => {
-    if (!(window.nim && window.nim.V2NIMLoginService.getLoginUser())) {
-      message.error('NIM SDK 尚未初始化和登录');
+    if (!window.chatroomV2) {
+      message.warning('聊天室 SDK 尚未初始化');
       return;
     }
 
     setSceneListLoading(true);
 
-    const [error, result] = await to(() => window.nim?.V2NIMStorageService.getStorageSceneList());
+    const [error, result] = await to(() =>
+      window.chatroomV2?.V2NIMStorageService.getStorageSceneList()
+    );
 
     setSceneListLoading(false);
 
@@ -138,12 +140,12 @@ const UploadFilePage = () => {
 
   // 第一步：创建上传任务
   const createUploadTask = async (values: FormValues) => {
-    if (!window.nim) {
-      message.error('NIM SDK 尚未初始化');
+    if (!window.chatroomV2) {
+      message.error('聊天室 SDK 尚未初始化');
       return null;
     }
 
-    if (!window.nim.V2NIMLoginService.getLoginUser()) {
+    if (!window.chatroomV2.getChatroomInfo()) {
       message.error('用户尚未登录');
       return null;
     }
@@ -172,7 +174,7 @@ const UploadFilePage = () => {
 
     // 调用创建上传任务API
     const [error, result] = await to(() =>
-      window.nim?.V2NIMStorageService.createUploadFileTask({
+      window.chatroomV2?.V2NIMStorageService.createUploadFileTask({
         fileObj: params.file,
         sceneName: params.sceneName,
       })
@@ -205,8 +207,8 @@ const UploadFilePage = () => {
 
   // 第二步：上传文件
   const uploadFile = async (task: any) => {
-    if (!window.nim) {
-      message.error('NIM SDK 尚未初始化');
+    if (!window.chatroomV2) {
+      message.error('聊天室 SDK 尚未初始化');
       return;
     }
 
@@ -228,7 +230,7 @@ const UploadFilePage = () => {
 
     // 调用上传文件API
     const [error, result] = await to(() =>
-      window.nim?.V2NIMStorageService.uploadFile(task, onProgress)
+      window.chatroomV2?.V2NIMStorageService.uploadFile(task, onProgress)
     );
 
     setUploadLoading(false);
@@ -251,8 +253,8 @@ const UploadFilePage = () => {
 
   // 取消上传文件
   const cancelUploadFile = async () => {
-    if (!window.nim) {
-      message.error('NIM SDK 尚未初始化');
+    if (!window.chatroomV2) {
+      message.error('聊天室 SDK 尚未初始化');
       return;
     }
 
@@ -265,7 +267,7 @@ const UploadFilePage = () => {
 
     // 调用取消上传API
     const [error, result] = await to(() =>
-      window.nim?.V2NIMStorageService.cancelUploadFile(uploadTask)
+      window.chatroomV2?.V2NIMStorageService.cancelUploadFile(uploadTask)
     );
 
     if (error) {
@@ -285,6 +287,10 @@ const UploadFilePage = () => {
 
   // 完整流程：创建任务并上传
   const onFinish = async (values: FormValues) => {
+    if (!(window.chatroomV2 && window.chatroomV2.getChatroomInfo())) {
+      message.error('尚未初始化或登录');
+      return;
+    }
     // 第一步：创建上传任务
     const task = await createUploadTask(values);
 
@@ -312,12 +318,12 @@ const UploadFilePage = () => {
       return;
     }
 
-    const createTaskStatement = `const uploadTask = await window.nim.V2NIMStorageService.createUploadFileTask({
+    const createTaskStatement = `const uploadTask = await window.chatroomV2.V2NIMStorageService.createUploadFileTask({
   fileObj: file,
   sceneName: "${values.sceneName}"
 });`;
 
-    const uploadStatement = `const result = await window.nim.V2NIMStorageService.uploadFile(uploadTask, (progress) => {
+    const uploadStatement = `const result = await window.chatroomV2.V2NIMStorageService.uploadFile(uploadTask, (progress) => {
   console.log('进度:', progress + '%');
 });`;
 

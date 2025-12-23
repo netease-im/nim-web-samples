@@ -1,11 +1,11 @@
 import { Layout, Menu } from 'antd';
 import { useEffect, useState } from 'react';
-import { Link, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Link, Navigate, Route, HashRouter as Router, Routes } from 'react-router-dom';
 
-import { scenesRoutes } from '@/pages/Scenes/route';
+import { apiRoutes } from '@/pages/APIs/route';
+import { chatroomsRoutes } from '@/pages/ChatroomApis/route';
 
 import './App.less';
-import { apiRoutes } from './pages/APIs/route';
 
 const { Header, Content } = Layout;
 
@@ -15,26 +15,28 @@ function App() {
   const menuItems = [
     {
       key: 'apis',
-      label: <Link to="/apis">API 示例</Link>,
+      label: <Link to="/apis">NIM API 示例</Link>,
     },
     {
-      key: 'scenes',
-      label: <Link to="/scenes">场景示例(敬请期待)</Link>,
+      key: 'chatroomApis',
+      label: <Link to="/chatroomApis">聊天室 API 示例</Link>,
     },
   ];
 
   useEffect(() => {
-    const path = window.location.pathname;
-    if (path.startsWith('/apis')) {
+    const hash = window.location.hash;
+    if (hash.startsWith('#/apis')) {
       setCurrent('apis');
-    } else if (path.startsWith('/scenes')) {
-      setCurrent('scenes');
+    } else if (hash.startsWith('#/chatroomApis')) {
+      setCurrent('chatroomApis');
+    } else if (!hash || hash === '#/' || hash === '#') {
+      setCurrent('apis');
     }
   }, []);
 
   return (
     <Router>
-      <Layout style={{ position: 'relative', minHeight: '100vh', minWidth: '100vw' }}>
+      <Layout style={{ position: 'relative', minHeight: '100vh' }}>
         <Header
           style={{
             display: 'flex',
@@ -70,7 +72,8 @@ function App() {
           }}
         >
           <Routes>
-            {scenesRoutes}
+            <Route path="/" element={<Navigate to="/apis" replace />} />
+            {chatroomsRoutes}
             {apiRoutes}
           </Routes>
         </Content>
