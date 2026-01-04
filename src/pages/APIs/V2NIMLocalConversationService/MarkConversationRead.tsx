@@ -287,7 +287,6 @@ const MarkConversationReadPage = () => {
         }}
       >
         <ul style={{ margin: 0, paddingLeft: 20, color: '#d46b08' }}>
-          <li>标记会话已读会将该会话的未读数清零</li>
           <li>有未读消息的会话显示 🔴 和未读数，无未读消息显示 ✅</li>
           <li>操作成功会触发 onConversationReadTimeUpdated 事件</li>
           <li>该操作会同步到其他登录设备</li>
